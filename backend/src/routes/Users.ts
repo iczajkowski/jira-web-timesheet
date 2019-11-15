@@ -13,8 +13,7 @@ const router = Router();
  ******************************************************************************/
 
 router.get("/all", async (req: Request, res: Response) => {
-  console.log(getWorklogs);
-  return res.status(OK).json({ test: "test" });
+  return res.status(OK).json({ message: "Hello world" });
 });
 
 export default router;

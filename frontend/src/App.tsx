@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import axios from "axios";
 
 const App: React.FC = () => {
+  const [message, setMessage] = useState("");
+
+  axios
+    .get("/api/users/all")
+    .then(response => setMessage(response.data.message));
+
   return (
     <div className="App">
       <header className="App-header">
@@ -16,7 +23,7 @@ const App: React.FC = () => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          {message}
         </a>
       </header>
     </div>
