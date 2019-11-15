@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prettier:fix": "prettier --write ./backend/**/*.ts"
+    "prettier:fix:backend": "prettier --write ./backend/**/*.ts",
+    "prettier:fix:frontend": "prettier --write ./frontend/**/*.{tsx,css,ts}"
   },
   "repository": {
     "type": "git",
