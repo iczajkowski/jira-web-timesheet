@@ -4,6 +4,8 @@ import { cofigValidator } from "../jira-client/configuration-validator";
 import userService from "./../services/UserService";
 import { ClientConfig } from "../jira-client/models/client-config";
 import { mapJiraError } from "../jira-client/jira-error-mapper";
+import { authentication } from "../shared/Authentication";
+import moment from "moment";
 
 // Init shared
 const router = Router();
@@ -23,9 +25,15 @@ router.post("/authenticate", async (req: Request, res: Response) => {
   }
   try {
     const user = await userService.getUser(config);
-    return res.status(OK).json(user);
+    const expires = moment()
+      .add(1, "h")
+      .toDate();
+    const token = authentication.generateJWT(config, expires);
+    return res
+      .status(OK)
+      .cookie("access_token", token, { httpOnly: true, expires })
+      .json(user);
   } catch (error) {
-    console.log(error);
     const jiraError = mapJiraError(error);
     const response = res.status(jiraError.httpStatusCode);
     return jiraError.message
