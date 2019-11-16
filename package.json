@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prettier:fix:backend": "prettier --write ./backend/**/*.ts",
-    "prettier:fix:frontend": "prettier --write ./frontend/**/*.{tsx,css,ts}"
+    "prettier:fix:frontend": "prettier --write ./frontend/**/*.{tsx,css,ts}",
+    "backend-dev": "cd backend && npm run start-dev",
+    "frontend-dev": "cd frontend && npm run start",
+    "start-dev": "concurrently \"npm run backend-dev\" \"npm run frontend-dev\""
   },
   "repository": {
     "type": "git",
@@ -20,6 +23,7 @@
   },
   "homepage": "https://github.com/iczajkow/jira-web-timesheet#readme",
   "devDependencies": {
+    "concurrently": "^5.0.0",
     "husky": "^3.0.9",
     "prettier": "1.19.1",
     "pretty-quick": "^2.0.1"
