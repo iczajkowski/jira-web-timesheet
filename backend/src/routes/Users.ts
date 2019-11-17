@@ -5,7 +5,6 @@ import userService from "./../services/UserService";
 import { ClientConfig } from "../jira-client/models/client-config";
 import { mapJiraError } from "../jira-client/jira-error-mapper";
 import { authentication } from "../shared/Authentication";
-import moment from "moment";
 
 // Init shared
 const router = Router();
@@ -14,9 +13,13 @@ const router = Router();
  *                      Get All Users - "GET /api/users/all"
  ******************************************************************************/
 
-router.get("/all", async (req: Request, res: Response) => {
-  return res.status(OK).json({ message: "Hello world" });
-});
+router.get(
+  "/all",
+  authentication.checkToken,
+  async (req: Request, res: Response) => {
+    return res.status(OK).json({ message: "Hello world" });
+  }
+);
 
 router.post("/authenticate", async (req: Request, res: Response) => {
   const config = req.body as ClientConfig;
@@ -25,13 +28,9 @@ router.post("/authenticate", async (req: Request, res: Response) => {
   }
   try {
     const user = await userService.getUser(config);
-    const expires = moment()
-      .add(1, "h")
-      .toDate();
-    const token = authentication.generateJWT(config, expires);
-    return res
+    return authentication
+      .setToken(res, config)
       .status(OK)
-      .cookie("access_token", token, { httpOnly: true, expires })
       .json(user);
   } catch (error) {
     const jiraError = mapJiraError(error);
