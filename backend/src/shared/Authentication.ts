@@ -1,16 +1,14 @@
 import { ClientConfig } from "../jira-client/models/client-config";
 import { sign, verify } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
-import moment from "moment";
 import { UNAUTHORIZED } from "http-status-codes";
 
 const ACCESS_TOKEN = "access_token";
 const DECODED_CONFIG = "decoded_config";
 
-const generateJWT = (config: ClientConfig, expiresIn: Date) => {
+const generateJWT = (config: ClientConfig) => {
   return sign(
     {
-      expIn: expiresIn,
       data: config
     },
     process.env.JWT_PRIVATE as string
@@ -18,11 +16,8 @@ const generateJWT = (config: ClientConfig, expiresIn: Date) => {
 };
 
 const setToken = (res: Response, config: ClientConfig) => {
-  const expires = moment()
-    .add(1, "h")
-    .toDate();
-  const token = generateJWT(config, expires);
-  return res.cookie(ACCESS_TOKEN, token, { httpOnly: true, expires });
+  const token = generateJWT(config);
+  return res.cookie(ACCESS_TOKEN, token, { httpOnly: true });
 };
 
 const checkToken = (req: Request, res: Response, next: NextFunction) => {
