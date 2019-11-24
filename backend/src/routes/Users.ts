@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { BAD_REQUEST, OK } from "http-status-codes";
+import { BAD_REQUEST, OK, UNAUTHORIZED } from "http-status-codes";
 import { cofigValidator } from "../jira-client/configuration-validator";
 import userService from "./../services/UserService";
 import { ClientConfig } from "../jira-client/models/client-config";
@@ -28,10 +28,10 @@ router.post("/authenticate", async (req: Request, res: Response) => {
   }
   try {
     const user = await userService.getUser(config);
-    return authentication
-      .setToken(res, config)
-      .status(OK)
-      .json(user);
+    if (!user) {
+      return res.status(UNAUTHORIZED);
+    }
+    return authentication.setToken(res, config).status(OK);
   } catch (error) {
     const jiraError = mapJiraError(error);
     const response = res.status(jiraError.httpStatusCode);
