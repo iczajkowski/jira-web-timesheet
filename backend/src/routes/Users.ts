@@ -21,6 +21,16 @@ router.get(
   }
 );
 
+router.get(
+  "/current",
+  authentication.checkToken,
+  async (req: Request<any>, res: Response) => {
+    const config = req.params[authentication.DECODED_CONFIG];
+    const user = await userService.getUser(config);
+    return res.status(OK).json(user);
+  }
+);
+
 router.post("/authenticate", async (req: Request, res: Response) => {
   const config = req.body as ClientConfig;
   if (!cofigValidator(config)) {
