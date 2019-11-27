@@ -41,7 +41,10 @@ router.post("/authenticate", async (req: Request, res: Response) => {
     if (!user) {
       return res.status(UNAUTHORIZED);
     }
-    return authentication.setToken(res, config).status(OK);
+    return authentication
+      .setToken(res, config)
+      .status(OK)
+      .end();
   } catch (error) {
     const jiraError = mapJiraError(error);
     const response = res.status(jiraError.httpStatusCode);

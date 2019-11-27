@@ -12,9 +12,11 @@ export const cofigValidator = (clientConfig: ClientConfig) => {
 };
 
 const validateEmail = ({ email }: { email: string }) => {
-  return isEmail(email);
+  return email && isEmail(email);
 };
 
 const validateURL = ({ url }: { url: string }) => {
-  return isURL(url) && (!url.startsWith("http") || url.startsWith("https"));
+  return (
+    url && isURL(url) && (!url.startsWith("http") || url.startsWith("https"))
+  );
 };
