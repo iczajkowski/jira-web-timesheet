@@ -5,18 +5,19 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import DashboardPage from "./pages/DashboardPage";
+import Login from "./components/Login/Login";
+import Home from "./components/Home/Home";
+import PrivateRoute from "./PrivateRoute";
 
 const Routes: React.FC = () => (
   <Router>
     <Switch>
       <Route path="/login">
-        <LoginPage />
+        <Login />
       </Route>
-      <Route path="/dashboard">
-        <DashboardPage />
-      </Route>
+      <PrivateRoute path="/dashboard">
+        <Home />
+      </PrivateRoute>
       <Route path="*">
         <Redirect to={{ pathname: "dashboard" }} />
       </Route>
