@@ -4,10 +4,12 @@ import { AppActionTypes } from "./appActions";
 
 export interface AppState {
   user: User | null;
+  isAuthenticated: boolean | undefined;
 }
 
 const defaultState: AppState = {
-  user: null
+  user: null,
+  isAuthenticated: undefined
 };
 
 export const appReducer = createReducer(defaultState, {
@@ -18,5 +20,9 @@ export const appReducer = createReducer(defaultState, {
   [AppActionTypes.ClearUser]: state => ({
     ...state,
     user: null
+  }),
+  [AppActionTypes.SetAuthenticated]: (state, action) => ({
+    ...state,
+    isAuthenticated: action.payload
   })
 });

@@ -1,9 +1,10 @@
-import { AnyAction, PayloadAction } from "@reduxjs/toolkit";
+import { AnyAction, createAction, PayloadAction } from "@reduxjs/toolkit";
 import { User } from "./models/User";
 
 export enum AppActionTypes {
   SetUser = "APP_SET_USER",
-  ClearUser = "APP_CLEAR_USER"
+  ClearUser = "APP_CLEAR_USER",
+  SetAuthenticated = "APP_SET_AUTHENTICATED"
 }
 
 export interface SetUserAction extends PayloadAction<User> {
@@ -21,3 +22,7 @@ export const setUserAction = (user: User): SetUserAction => ({
   type: AppActionTypes.SetUser,
   payload: user
 });
+
+export const setAuthenticated = createAction<boolean>(
+  AppActionTypes.SetAuthenticated
+);

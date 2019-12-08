@@ -1,5 +1,4 @@
-import { PayloadAction, AnyAction, createAction } from "@reduxjs/toolkit";
-import { LoginRequest } from "../../models/LoginRequest";
+import { AnyAction, createAction, PayloadAction } from "@reduxjs/toolkit";
 
 export enum LoginActionTypes {
   Login = "LOGIN_LOGIN",
@@ -7,9 +6,8 @@ export enum LoginActionTypes {
   SetError = "LOGIN_SET_ERROR"
 }
 
-export interface LoginAction extends PayloadAction<LoginRequest> {
+export interface LoginAction extends AnyAction {
   type: LoginActionTypes.Login;
-  payload: LoginRequest;
 }
 
 export interface LoginSuccess extends AnyAction {
@@ -23,6 +21,6 @@ export interface ErrorAction extends PayloadAction<any> {
 
 export type LoginActions = LoginAction | LoginSuccess | ErrorAction;
 
-export const loginAction = createAction<LoginRequest>(LoginActionTypes.Login);
+export const loginAction = createAction<void>(LoginActionTypes.Login);
 export const loginSuccess = createAction<void>(LoginActionTypes.LoginSuccess);
 export const setError = createAction<any>(LoginActionTypes.SetError);

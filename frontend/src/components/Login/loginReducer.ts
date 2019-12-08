@@ -12,11 +12,11 @@ export const defaultState: LoginState = {
 };
 
 export const loginReducer = createReducer(defaultState, {
-  [LoginActionTypes.Login]: (state, action) => ({
+  [LoginActionTypes.Login]: state => ({
     ...state,
     isLoggingIn: true
   }),
-  [LoginActionTypes.LoginSuccess]: (state, action) => ({
+  [LoginActionTypes.LoginSuccess]: state => ({
     ...state,
     isLoggingIn: false
   }),
