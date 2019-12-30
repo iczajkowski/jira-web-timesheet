@@ -1,4 +1,6 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
+import "./LoginForm.css";
+import {Button, Form, Input} from "antd";
 import { LoginRequest } from "../../models/LoginRequest";
 
 interface Props {
@@ -35,15 +37,22 @@ const LoginForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
   };
 
   return (
-    <form onSubmit={onFormSubmit}>
-      Email
-      <input onChange={event => handleInputChange(event, onEmailChange)} />
-      URL:
-      <input onChange={event => handleInputChange(event, onURLChange)} />
-      Token:
-      <input onChange={event => handleInputChange(event, onTokenChange)} />
-      <button type="submit">Login</button>
-    </form>
+    <Form onSubmit={onFormSubmit}>
+      <Form.Item>
+        <Input onChange={event => handleInputChange(event, onEmailChange)} placeholder="Email" />
+      </Form.Item>
+      <Form.Item>
+        <Input onChange={event => handleInputChange(event, onURLChange)} placeholder="URL"  />
+      </Form.Item>
+      <Form.Item>
+        <Input onChange={event => handleInputChange(event, onTokenChange)} placeholder="Token"  />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit" className="login-form__button">
+          Log in
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authenticate } from "./authenticate";
 import { RootState } from "../../reducer";
 import { Redirect } from "react-router-dom";
+import {Card, Layout} from "antd";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,10 @@ const Login: React.FC = () => {
   return isAuthenticated ? (
     <Redirect to={{ pathname: "dashboard" }} />
   ) : (
-    <LoginForm onSubmit={onLogin} />
+
+        <Card>
+          <LoginForm onSubmit={onLogin} />
+        </Card>
   );
 };
 
