@@ -1,54 +1,56 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, { FormEvent } from "react";
 import "./LoginForm.css";
-import {Button, Form, Input} from "antd";
+import { Button, Form, Input } from "antd";
 import { LoginRequest } from "../../models/LoginRequest";
+import { FormComponentProps } from "antd/lib/form";
+import { WrappedFormUtils } from "antd/lib/form/Form";
 
 interface Props {
   onSubmit: (request: LoginRequest) => void;
+  isLoggingIn?: boolean;
+  form?: WrappedFormUtils;
 }
 
-const LoginForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
-  const [loginRequest, setLoginRequest] = useState<LoginRequest>({
-    apiToken: "",
-    email: "",
-    url: ""
-  });
-
+const LoginForm: React.FunctionComponent<Props & FormComponentProps> = ({
+  onSubmit,
+  isLoggingIn,
+  form
+}) => {
   const onFormSubmit = (event: FormEvent) => {
     event.preventDefault();
-    onSubmit(loginRequest);
+    form.validateFields((error, values) => {
+      if (!error) {
+        onSubmit(values);
+      }
+    });
   };
 
-  const onEmailChange = (email: string) =>
-    setLoginRequest({ ...loginRequest, email });
-
-  const onURLChange = (url: string) =>
-    setLoginRequest({ ...loginRequest, url });
-
-  const onTokenChange = (apiToken: string) =>
-    setLoginRequest({ ...loginRequest, apiToken });
-
-  const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement>,
-    handler: (value: string) => void
-  ) => {
-    const value = event.target.value;
-    handler(value);
-  };
+  const { getFieldDecorator } = form;
 
   return (
     <Form onSubmit={onFormSubmit}>
       <Form.Item>
-        <Input onChange={event => handleInputChange(event, onEmailChange)} placeholder="Email" />
+        {getFieldDecorator("email", {
+          rules: [{ required: true, message: "Please input your email" }]
+        })(<Input placeholder="Email" />)}
       </Form.Item>
       <Form.Item>
-        <Input onChange={event => handleInputChange(event, onURLChange)} placeholder="URL"  />
+        {getFieldDecorator("url", {
+          rules: [{ required: true, message: "Please input URL" }]
+        })(<Input placeholder="URL" />)}
       </Form.Item>
       <Form.Item>
-        <Input onChange={event => handleInputChange(event, onTokenChange)} placeholder="Token"  />
+        {getFieldDecorator("apiToken", {
+          rules: [{ required: true, message: "Please input token" }]
+        })(<Input placeholder="Token" />)}
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="login-form__button">
+        <Button
+          loading={isLoggingIn}
+          type="primary"
+          htmlType="submit"
+          className="login-form__button"
+        >
           Log in
         </Button>
       </Form.Item>
@@ -56,4 +58,8 @@ const LoginForm: React.FunctionComponent<Props> = ({ onSubmit }) => {
   );
 };
 
-export default LoginForm;
+const WrappedLoginForm = Form.create<Props & FormComponentProps>({
+  name: "login"
+})(LoginForm);
+
+export default WrappedLoginForm;

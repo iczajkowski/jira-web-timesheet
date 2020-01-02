@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { authenticate } from "./authenticate";
 import { RootState } from "../../reducer";
 import { Redirect } from "react-router-dom";
-import {Card, Layout} from "antd";
+import { Card, Col, Row } from "antd";
+import "./Login.css";
 
 const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,13 +17,21 @@ const Login: React.FC = () => {
     (state: RootState) => state.appState.isAuthenticated
   );
 
+  const isLoggingIn = useSelector(
+    (state: RootState) => state.login.isLoggingIn
+  );
+
   return isAuthenticated ? (
     <Redirect to={{ pathname: "dashboard" }} />
   ) : (
-
-        <Card>
-          <LoginForm onSubmit={onLogin} />
+    <Row className="login__card-wrapper">
+      <Col md={{ span: 12, offset: 6 }} xl={{ span: 8, offset: 8 }}>
+        <Card className="login__card">
+          <h2>Sign in</h2>
+          <LoginForm onSubmit={onLogin} isLoggingIn={isLoggingIn} />
         </Card>
+      </Col>
+    </Row>
   );
 };
 
