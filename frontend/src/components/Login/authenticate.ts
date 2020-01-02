@@ -19,7 +19,7 @@ export const authenticate = (request: LoginRequest) => {
         dispatch(setAuthenticated(true));
       })
       .catch((error: AxiosError) => {
-        dispatch(setError((error.response && error.response.data) || null));
+        dispatch(setError(error.response && error.response.status));
       });
   };
 };

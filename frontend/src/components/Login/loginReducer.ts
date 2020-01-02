@@ -3,7 +3,7 @@ import { LoginActionTypes } from "./loginActions";
 
 export interface LoginState {
   isLoggingIn: boolean;
-  error: any;
+  error: number | null;
 }
 
 export const defaultState: LoginState = {

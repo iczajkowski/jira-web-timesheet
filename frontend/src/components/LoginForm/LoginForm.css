@@ -1,3 +1,7 @@
 .login-form__button {
-    width: 100%;
+  width: 100%;
+}
+
+.login-form__error {
+  padding-top: 0.5rem;
 }

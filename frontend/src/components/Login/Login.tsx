@@ -21,6 +21,8 @@ const Login: React.FC = () => {
     (state: RootState) => state.login.isLoggingIn
   );
 
+  const loginError = useSelector((state: RootState) => state.login.error);
+
   return isAuthenticated ? (
     <Redirect to={{ pathname: "dashboard" }} />
   ) : (
@@ -28,7 +30,11 @@ const Login: React.FC = () => {
       <Col md={{ span: 12, offset: 6 }} xl={{ span: 8, offset: 8 }}>
         <Card className="login__card">
           <h2>Sign in</h2>
-          <LoginForm onSubmit={onLogin} isLoggingIn={isLoggingIn} />
+          <LoginForm
+            onSubmit={onLogin}
+            isLoggingIn={isLoggingIn}
+            loginError={loginError}
+          />
         </Card>
       </Col>
     </Row>
