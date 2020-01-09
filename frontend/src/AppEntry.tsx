@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { RootState } from "./reducer";
 import React from "react";
-import { checkAuthenticate } from "./components/Login/authenticate";
+import { checkAuthenticate } from "./api/authenticate";
 import Routes from "./Routes";
 
 interface Props {

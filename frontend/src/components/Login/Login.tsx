@@ -2,7 +2,7 @@ import React from "react";
 import LoginForm from "../LoginForm/LoginForm";
 import { LoginRequest } from "../../models/LoginRequest";
 import { useDispatch, useSelector } from "react-redux";
-import { authenticate } from "./authenticate";
+import { authenticate } from "../../api/authenticate";
 import { RootState } from "../../reducer";
 import { Redirect } from "react-router-dom";
 import { Card, Col, Layout, Row } from "antd";

@@ -19,7 +19,8 @@ export const appReducer = createReducer(defaultState, {
   }),
   [AppActionTypes.ClearUser]: state => ({
     ...state,
-    user: null
+    user: null,
+    isAuthenticated: false
   }),
   [AppActionTypes.SetAuthenticated]: (state, action) => ({
     ...state,
