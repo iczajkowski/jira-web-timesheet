@@ -20,6 +20,10 @@ const setToken = (res: Response, config: ClientConfig) => {
   return res.cookie(ACCESS_TOKEN, token, { httpOnly: true });
 };
 
+const clearToken = (res: Response) => {
+  return res.clearCookie(ACCESS_TOKEN);
+};
+
 const checkToken = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies[ACCESS_TOKEN];
   if (!token) {
@@ -38,5 +42,6 @@ const checkToken = (req: Request, res: Response, next: NextFunction) => {
 export const authentication = {
   setToken,
   checkToken,
+  clearToken,
   DECODED_CONFIG
 };

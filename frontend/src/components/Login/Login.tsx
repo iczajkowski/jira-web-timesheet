@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { authenticate } from "./authenticate";
 import { RootState } from "../../reducer";
 import { Redirect } from "react-router-dom";
-import { Card, Col, Row } from "antd";
+import { Card, Col, Layout, Row } from "antd";
 import "./Login.css";
 
 const Login: React.FC = () => {
@@ -26,18 +26,22 @@ const Login: React.FC = () => {
   return isAuthenticated ? (
     <Redirect to={{ pathname: "dashboard" }} />
   ) : (
-    <Row className="login__card-wrapper">
-      <Col md={{ span: 12, offset: 6 }} xl={{ span: 8, offset: 8 }}>
-        <Card className="login__card">
-          <h2>Sign in</h2>
-          <LoginForm
-            onSubmit={onLogin}
-            isLoggingIn={isLoggingIn}
-            loginError={loginError}
-          />
-        </Card>
-      </Col>
-    </Row>
+    <Layout style={{ height: "100%" }}>
+      <Layout.Content style={{ padding: "50px 50px" }}>
+        <Row className="login__card-wrapper">
+          <Col md={{ span: 12, offset: 6 }} xl={{ span: 8, offset: 8 }}>
+            <Card className="login__card">
+              <h2>Sign in</h2>
+              <LoginForm
+                onSubmit={onLogin}
+                isLoggingIn={isLoggingIn}
+                loginError={loginError}
+              />
+            </Card>
+          </Col>
+        </Row>
+      </Layout.Content>
+    </Layout>
   );
 };
 

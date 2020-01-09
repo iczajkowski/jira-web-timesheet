@@ -1,0 +1,9 @@
+.user-info__menu {
+  line-height: 64px;
+}
+
+.user-info__avatar {
+  height: 32px;
+  width: 32px;
+  margin-right: 1rem;
+}

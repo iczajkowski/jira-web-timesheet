@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "./reducer";
 import { Route, Redirect } from "react-router-dom";
+import MainLayout from "./components/MainLayout/MainLayout";
 
 // @ts-ignore
 const PrivateRoute = ({ children, ...rest }) => {
@@ -14,7 +15,7 @@ const PrivateRoute = ({ children, ...rest }) => {
       {...rest}
       render={({ location }) =>
         isAuthenticated ? (
-          children
+          <MainLayout>{children}</MainLayout>
         ) : (
           <Redirect
             to={{

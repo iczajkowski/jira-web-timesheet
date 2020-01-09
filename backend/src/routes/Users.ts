@@ -31,6 +31,14 @@ router.get(
   }
 );
 
+router.post(
+  "/logout",
+  authentication.checkToken,
+  async (req: Request<any>, res: Response) => {
+    return authentication.clearToken(res).end();
+  }
+);
+
 router.post("/authenticate", async (req: Request, res: Response) => {
   const config = req.body as ClientConfig;
   if (!cofigValidator(config)) {
