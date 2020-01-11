@@ -12,7 +12,6 @@ const getWorklogs = async ({
   from: Date;
   to: Date;
 }) => {
-  console.log("test", config);
   const jiraClient = jiraClientFactory(config);
   const { displayName } = (await jiraClient.myself.getMyself()) as User;
   return await getWorklogsApi({
