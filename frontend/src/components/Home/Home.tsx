@@ -1,15 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Calendar, Spin } from "antd";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getWorklogs } from "../../api/worklogs";
-import moment, { Moment } from "moment";
 import { RootState } from "../../reducer";
 import WorklogCalendar from "../WorklogCalendar/WorklogCalendar";
-
-const getDateSpan = (current: Moment) => ({
-  from: current.startOf("month").toDate(),
-  to: current.endOf("month").toDate()
-});
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,6 +16,10 @@ const Home: React.FC = () => {
   );
 
   const worklogs = useSelector((state: RootState) => state.worklogs.worklogs);
+  const userTimezone = useSelector((state: RootState) => {
+    const user = state.appState.user;
+    return user && user.timeZone;
+  }) as string;
 
   return (
     <div style={{ background: "white", flex: 1 }}>
@@ -30,6 +27,7 @@ const Home: React.FC = () => {
         isFetchingWorklogs={isFetchingWorklogs}
         onViewChanged={fetchWorklogs}
         worklogs={worklogs}
+        userTimezone={userTimezone}
       />
     </div>
   );
