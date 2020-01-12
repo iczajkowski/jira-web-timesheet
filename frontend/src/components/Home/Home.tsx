@@ -23,7 +23,6 @@ const Home: React.FC = () => {
   );
 
   const worklogs = useSelector((state: RootState) => state.worklogs.worklogs);
-  console.log({ worklogs });
 
   return (
     <div style={{ background: "white", flex: 1 }}>

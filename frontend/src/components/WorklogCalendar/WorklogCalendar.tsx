@@ -2,6 +2,7 @@ import moment, { Moment } from "moment";
 import React, { useEffect, useState } from "react";
 import { Calendar, Spin } from "antd";
 import { Worklog } from "../../models/Worklog";
+import { groupWorklogsByDates } from "./groupWorklogsByDates";
 
 interface WorklogCalendarProps {
   isFetchingWorklogs: boolean;
@@ -33,6 +34,8 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     const dateSpan = getDateSpan(selectedDate);
     onViewChanged(dateSpan.from, dateSpan.to);
   }, []);
+
+  console.log(groupWorklogsByDates(worklogs));
 
   return (
     <Spin spinning={isFetchingWorklogs}>
