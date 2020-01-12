@@ -1,0 +1,8 @@
+.worklog-calendar__header {
+  margin: 0.5rem 1rem;
+  display: flex;
+}
+
+.worklog-calendar__total-summary {
+  flex: 1 1 auto;
+}

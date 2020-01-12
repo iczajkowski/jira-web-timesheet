@@ -1,9 +1,11 @@
 import moment, { Moment } from "moment";
 import React, { useEffect, useState } from "react";
-import { Calendar, Spin } from "antd";
+import { Calendar, Spin, Typography } from "antd";
 import { Worklog } from "../../models/Worklog";
 import { groupWorklogsByDates } from "./groupWorklogsByDates";
 import DateCellFactory from "./DateCell";
+import { formatDuration } from "../../utils/duration";
+import "./WorklogCalendar.css";
 
 interface WorklogCalendarProps {
   isFetchingWorklogs: boolean;
@@ -11,6 +13,21 @@ interface WorklogCalendarProps {
   userTimezone: string;
   onViewChanged: (from: Date, to: Date) => void;
 }
+
+const sumTotalLoggedTime = (worklogs: Worklog[]): number => {
+  if (!worklogs) {
+    return 0;
+  }
+  return worklogs.reduce(
+    (sum, worklog) =>
+      sum +
+      worklog.worklogs.reduce(
+        (subSum, worklogItem) => subSum + worklogItem.timeSpentSeconds,
+        0
+      ),
+    0
+  );
+};
 
 const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   onViewChanged,
@@ -43,10 +60,18 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
 
   return (
     <Spin spinning={isFetchingWorklogs}>
+      <div className="worklog-calendar__header">
+        <div className="worklog-calendar__total-summary">
+          <Typography.Text>Total logged:</Typography.Text>
+          <Typography.Text strong>
+            {formatDuration(sumTotalLoggedTime(worklogs))}
+          </Typography.Text>
+        </div>
+      </div>
       <Calendar
         value={selectedDate}
         onChange={dateChanged}
-        dateCellRender={dateCellRenderer}
+        dateFullCellRender={dateCellRenderer}
       />
     </Spin>
   );
