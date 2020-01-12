@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getWorklogs } from "../../api/worklogs";
 import moment, { Moment } from "moment";
 import { RootState } from "../../reducer";
+import WorklogCalendar from "../WorklogCalendar/WorklogCalendar";
 
 const getDateSpan = (current: Moment) => ({
   from: current.startOf("month").toDate(),
@@ -12,34 +13,25 @@ const getDateSpan = (current: Moment) => ({
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
-  const [selectedDate, setSelectedDate] = useState(moment());
 
-  const fetchWorklogs = (date: Moment) => {
-    const dateSpan = getDateSpan(date);
-    getWorklogs(dateSpan)(dispatch);
+  const fetchWorklogs = (from: Date, to: Date) => {
+    getWorklogs({ from, to })(dispatch);
   };
-
-  useEffect(() => fetchWorklogs(selectedDate), []);
 
   const isFetchingWorklogs = useSelector(
     (state: RootState) => state.worklogs.isFetchingWorklogs
   );
-
-  const dateChanged = (value: any) => {
-    setSelectedDate(value);
-    if (!value.startOf("month").isSame(selectedDate.startOf("month"))) {
-      fetchWorklogs(value);
-    }
-  };
 
   const worklogs = useSelector((state: RootState) => state.worklogs.worklogs);
   console.log({ worklogs });
 
   return (
     <div style={{ background: "white", flex: 1 }}>
-      <Spin spinning={isFetchingWorklogs}>
-        <Calendar value={selectedDate} onChange={dateChanged} />
-      </Spin>
+      <WorklogCalendar
+        isFetchingWorklogs={isFetchingWorklogs}
+        onViewChanged={fetchWorklogs}
+        worklogs={worklogs}
+      />
     </div>
   );
 };

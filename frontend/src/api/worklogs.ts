@@ -20,7 +20,6 @@ export const getWorklogs = (request: WorklogsRequest) => {
   return (dispatch: Dispatch) => {
     dispatch(loadWorklogsAction());
     const { from, to } = formatDates(request);
-    console.log({ from, to });
     axios
       .get(`/api/worklogs?from=${from}&to=${to}`)
       .then((worklogsResponse: AxiosResponse<any>) => {
