@@ -9,7 +9,8 @@
     "prettier:fix:frontend": "prettier --write ./frontend/**/*.{tsx,css,ts}",
     "backend-dev": "cd backend && npm run start-dev",
     "frontend-dev": "cd frontend && npm run start",
-    "start-dev": "concurrently \"npm run backend-dev\" \"npm run frontend-dev\""
+    "start-dev": "concurrently \"npm run backend-dev\" \"npm run frontend-dev\"",
+    "start": "cd backend && npm run start-prod"
   },
   "repository": {
     "type": "git",

@@ -1,6 +1,5 @@
 import cookieParser from "cookie-parser";
 import express from "express";
-import { Request, Response } from "express";
 import logger from "morgan";
 import path from "path";
 import BaseRouter from "./routes";
@@ -15,7 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/api", BaseRouter);
-
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname + "/public/index.html"))
+);
 /**
  * Point express to the 'views' directory. If you're using a
  * single-page-application framework like react or angular
