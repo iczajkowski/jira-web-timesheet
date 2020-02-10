@@ -12,7 +12,10 @@ const generateJWT = (config: ClientConfig) => {
     {
       data: config
     },
-    process.env.JWT_PRIVATE as string
+    process.env.JWT_PRIVATE as string,
+    {
+      expiresIn: "1h"
+    }
   );
 };
 
@@ -47,7 +50,7 @@ const checkToken = (req: Request, res: Response, next: NextFunction) => {
       if (err) {
         return res.status(UNAUTHORIZED).end();
       } else {
-        prolongCookie(res, token);
+        setToken(res, decoded.data);
         req.params[DECODED_CONFIG] = decoded.data;
         next();
       }

@@ -1,6 +1,6 @@
 import moment, { Moment } from "moment";
 import React, { useEffect, useState } from "react";
-import { Calendar, Spin, Typography } from "antd";
+import { Calendar, Spin, Typography, Button, Icon } from "antd";
 import { Worklog } from "../../models/Worklog";
 import { groupWorklogsByDates } from "./groupWorklogsByDates";
 import DateCellFactory from "./DateCell";
@@ -50,6 +50,16 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     }
   };
 
+  const forward = (value: any) => {
+    const previousMonth = selectedDate.clone().add(1, "month");
+    dateChanged(previousMonth);
+  };
+
+  const backward = (value: any) => {
+    const nextMonth = selectedDate.clone().subtract(1, "month");
+    dateChanged(nextMonth);
+  };
+
   useEffect(() => {
     const dateSpan = getDateSpan(selectedDate);
     onViewChanged(dateSpan.from, dateSpan.to);
@@ -67,6 +77,16 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
             {formatDuration(sumTotalLoggedTime(worklogs))}
           </Typography.Text>
         </div>
+        <Button.Group>
+          <Button type="primary" onClick={backward}>
+            <Icon type="left" />
+            Backward
+          </Button>
+          <Button type="primary" onClick={forward}>
+            Forward
+            <Icon type="right" />
+          </Button>
+        </Button.Group>
       </div>
       <Calendar
         value={selectedDate}
