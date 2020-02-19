@@ -1,3 +1,8 @@
+export interface UserWithUrl {
+  user: User;
+  url: string;
+}
+
 export interface User {
   self: string;
   key: string;

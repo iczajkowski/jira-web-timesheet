@@ -1,5 +1,5 @@
 import { AnyAction, createAction, PayloadAction } from "@reduxjs/toolkit";
-import { User } from "./models/User";
+import { User, UserWithUrl } from "./models/User";
 
 export enum AppActionTypes {
   SetUser = "APP_SET_USER",
@@ -8,9 +8,9 @@ export enum AppActionTypes {
   Logout = "APP_LOGOUT"
 }
 
-export interface SetUserAction extends PayloadAction<User> {
+export interface SetUserAction extends PayloadAction<UserWithUrl> {
   type: AppActionTypes.SetUser;
-  payload: User;
+  payload: { user: User; url: string };
 }
 
 export interface ClearUserAction extends AnyAction {
@@ -23,9 +23,12 @@ export interface LogoutAction extends AnyAction {
 
 export type AppActions = SetUserAction | ClearUserAction | LogoutAction;
 
-export const setUserAction = (user: User): SetUserAction => ({
+export const setUserAction = (payload: {
+  user: User;
+  url: string;
+}): SetUserAction => ({
   type: AppActionTypes.SetUser,
-  payload: user
+  payload
 });
 
 export const setAuthenticatedAction = createAction<boolean>(

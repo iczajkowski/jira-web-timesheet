@@ -8,6 +8,7 @@ import { formatDuration } from "../../utils/duration";
 import "./WorklogCalendar.css";
 
 interface WorklogCalendarProps {
+  url: string;
   isFetchingWorklogs: boolean;
   worklogs: Worklog[];
   userTimezone: string;
@@ -30,6 +31,7 @@ const sumTotalLoggedTime = (worklogs: Worklog[]): number => {
 };
 
 const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
+  url,
   onViewChanged,
   isFetchingWorklogs,
   userTimezone,
@@ -66,7 +68,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   }, []);
 
   const groupedWorklogs = groupWorklogsByDates(worklogs, userTimezone);
-  const dateCellRenderer = DateCellFactory(groupedWorklogs);
+  const dateCellRenderer = DateCellFactory(groupedWorklogs, url);
 
   return (
     <Spin spinning={isFetchingWorklogs}>

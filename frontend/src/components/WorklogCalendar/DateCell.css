@@ -7,3 +7,14 @@
 .worklog-list-item :not(:last-child) {
   margin-right: 0.5rem;
 }
+
+.callendar-cell__header {
+  display: flex;
+}
+.callendar-cell__total-time {
+  text-align: start;
+}
+
+.callendar-cell__day {
+  flex: 1 0 auto;
+}

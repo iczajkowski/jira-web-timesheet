@@ -6,7 +6,7 @@ import {
   setError
 } from "../components/Login/loginActions";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { User } from "../models/User";
+import { User, UserWithUrl } from "../models/User";
 import {
   clearUserAction,
   logoutAction,
@@ -24,7 +24,7 @@ export const authenticate = (request: LoginRequest) => {
         return axios.get("/api/users/current");
       })
       .then((userResponse: AxiosResponse<User>) => {
-        dispatch(setUserAction(userResponse.data));
+        dispatch(setUserAction({ user: userResponse.data, url: request.url }));
         dispatch(setAuthenticatedAction(true));
       })
       .catch((error: AxiosError) => {
@@ -37,7 +37,7 @@ export const checkAuthenticate = () => {
   return (dispatch: Dispatch<any>) => {
     axios
       .get("/api/users/current")
-      .then((userResponse: AxiosResponse<User>) => {
+      .then((userResponse: AxiosResponse<UserWithUrl>) => {
         dispatch(setUserAction(userResponse.data));
         dispatch(setAuthenticatedAction(true));
       })

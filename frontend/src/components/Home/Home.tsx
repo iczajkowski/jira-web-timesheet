@@ -16,6 +16,7 @@ const Home: React.FC = () => {
   );
 
   const worklogs = useSelector((state: RootState) => state.worklogs.worklogs);
+  const url = useSelector((state: RootState) => state.appState.url) || "";
   const userTimezone = useSelector((state: RootState) => {
     const user = state.appState.user;
     return user && user.timeZone;
@@ -24,6 +25,7 @@ const Home: React.FC = () => {
   return (
     <div style={{ background: "white", flex: 1 }}>
       <WorklogCalendar
+        url={url}
         isFetchingWorklogs={isFetchingWorklogs}
         onViewChanged={fetchWorklogs}
         worklogs={worklogs}

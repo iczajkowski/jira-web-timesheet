@@ -13,9 +13,9 @@ router.get(
   "/current",
   authentication.checkToken,
   async (req: Request<any>, res: Response) => {
-    const config = req.params[authentication.DECODED_CONFIG];
+    const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
     const user = await userService.getUser(config);
-    return res.status(OK).json(user);
+    return res.status(OK).json({ user, url: config.url });
   }
 );
 
