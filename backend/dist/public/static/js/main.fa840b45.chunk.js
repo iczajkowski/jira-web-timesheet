@@ -309,8 +309,7 @@
                                       );
                                     })
                                     .then(function(t) {
-                                      e(f({ user: t.data, url: n.url })),
-                                        e(m(!0));
+                                      e(f(t.data)), e(m(!0));
                                     })
                                     .catch(function(t) {
                                       e(S(t.response && t.response.status));
@@ -779,4 +778,4 @@
   },
   [[199, 1, 2]]
 ]);
-//# sourceMappingURL=main.cec6e3a9.chunk.js.map
+//# sourceMappingURL=main.fa840b45.chunk.js.map
