@@ -23,8 +23,8 @@ export const authenticate = (request: LoginRequest) => {
         dispatch(loginSuccess());
         return axios.get("/api/users/current");
       })
-      .then((userResponse: AxiosResponse<User>) => {
-        dispatch(setUserAction({ user: userResponse.data, url: request.url }));
+      .then((userResponse: AxiosResponse<UserWithUrl>) => {
+        dispatch(setUserAction(userResponse.data));
         dispatch(setAuthenticatedAction(true));
       })
       .catch((error: AxiosError) => {
