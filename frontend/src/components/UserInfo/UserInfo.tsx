@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { User } from "../../models/User";
 import { Icon, Menu } from "antd";
 import SubMenu from "antd/es/menu/SubMenu";
@@ -9,7 +9,11 @@ interface Props {
   onLogout: () => void;
 }
 
-const UserInfo: React.FC<Props> = ({ user, onLogout }) => {
+const UserInfo: React.FC<PropsWithChildren<Props>> = ({
+  user,
+  onLogout,
+  children
+}) => {
   return (
     <Menu
       theme="dark"
@@ -39,6 +43,9 @@ const UserInfo: React.FC<Props> = ({ user, onLogout }) => {
           Logout
         </Menu.Item>
       </SubMenu>
+      {children && (
+        <Menu.Item className="user-info__extras">{children}</Menu.Item>
+      )}
     </Menu>
   );
 };

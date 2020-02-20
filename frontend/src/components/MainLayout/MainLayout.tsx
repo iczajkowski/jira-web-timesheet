@@ -1,5 +1,5 @@
 import React from "react";
-import { Layout } from "antd";
+import { Icon, Layout } from "antd";
 import "./MainLayout.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../reducer";
@@ -16,11 +16,17 @@ const MainLayout = ({ children }) => {
 
   return (
     <Layout className="main-layout">
-      <Header>
-        <UserInfo user={user} onLogout={onLogout} />
+      <Header className="main-layout__header">
+        <UserInfo user={user} onLogout={onLogout}>
+          <a
+            href="https://github.com/iczajkow/jira-web-timesheet"
+            target="_blank"
+          >
+            <Icon type="github" style={{ fontSize: "24px" }} />
+          </a>
+        </UserInfo>
       </Header>
       <Content className="main-layout__content">{children}</Content>
-      <Footer>Footer</Footer>
     </Layout>
   );
 };

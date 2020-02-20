@@ -1,10 +1,11 @@
 import moment, { Moment } from "moment";
 import React, { useEffect, useState } from "react";
-import { Calendar, Spin, Typography, Button, Icon } from "antd";
+import { Button, Calendar, ConfigProvider, Icon, Spin, Statistic } from "antd";
 import { Worklog } from "../../models/Worklog";
 import { groupWorklogsByDates } from "./groupWorklogsByDates";
 import DateCellFactory from "./DateCell";
 import { formatDuration } from "../../utils/duration";
+import en_GB from "antd/lib/locale-provider/en_GB";
 import "./WorklogCalendar.css";
 
 interface WorklogCalendarProps {
@@ -14,6 +15,8 @@ interface WorklogCalendarProps {
   userTimezone: string;
   onViewChanged: (from: Date, to: Date) => void;
 }
+
+moment.locale("en-gb");
 
 const sumTotalLoggedTime = (worklogs: Worklog[]): number => {
   if (!worklogs) {
@@ -74,10 +77,10 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     <Spin spinning={isFetchingWorklogs}>
       <div className="worklog-calendar__header">
         <div className="worklog-calendar__total-summary">
-          <Typography.Text>Total logged:</Typography.Text>
-          <Typography.Text strong>
-            {formatDuration(sumTotalLoggedTime(worklogs))}
-          </Typography.Text>
+          <Statistic
+            title="Total logged:"
+            value={formatDuration(sumTotalLoggedTime(worklogs))}
+          />
         </div>
         <Button.Group>
           <Button type="primary" onClick={backward}>
@@ -90,11 +93,13 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
           </Button>
         </Button.Group>
       </div>
-      <Calendar
-        value={selectedDate}
-        onChange={dateChanged}
-        dateFullCellRender={dateCellRenderer}
-      />
+      <ConfigProvider locale={en_GB}>
+        <Calendar
+          value={selectedDate}
+          onChange={dateChanged}
+          dateFullCellRender={dateCellRenderer}
+        />
+      </ConfigProvider>
     </Spin>
   );
 };
