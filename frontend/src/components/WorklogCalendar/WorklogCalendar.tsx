@@ -55,14 +55,19 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     }
   };
 
-  const forward = (value: any) => {
+  const forward = () => {
     const previousMonth = selectedDate.clone().add(1, "month");
     dateChanged(previousMonth);
   };
 
-  const backward = (value: any) => {
+  const backward = () => {
     const nextMonth = selectedDate.clone().subtract(1, "month");
     dateChanged(nextMonth);
+  };
+
+  const refresh = () => {
+    const dateSpan = getDateSpan(selectedDate);
+    onViewChanged(dateSpan.from, dateSpan.to);
   };
 
   useEffect(() => {
@@ -86,6 +91,10 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
           <Button type="primary" onClick={backward}>
             <Icon type="left" />
             Backward
+          </Button>
+          <Button type="primary" onClick={refresh}>
+            <Icon type="sync" />
+            Refresh
           </Button>
           <Button type="primary" onClick={forward}>
             Forward
