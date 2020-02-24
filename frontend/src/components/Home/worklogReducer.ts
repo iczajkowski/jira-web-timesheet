@@ -16,7 +16,8 @@ export const defaultState: WorklogState = {
 export const worklogReducer = createReducer(defaultState, {
   [WorklogActionTypes.LoadWorklogs]: state => ({
     ...state,
-    isFetchingWorklogs: true
+    isFetchingWorklogs: true,
+    error: null
   }),
   [WorklogActionTypes.LoadedWorklogs]: (state, action) => ({
     ...state,
