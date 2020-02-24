@@ -3,6 +3,11 @@ import { DATE_FORMAT, WorklogGroups } from "./groupWorklogsByDates";
 import { Moment } from "moment";
 import "./DateCell.css";
 import { formatDuration } from "../../utils/duration";
+import { Typography } from "antd";
+
+const { Text } = Typography;
+
+const FULL_WORKDAY = 8 * 3600;
 
 const buildHref = (url: string, issueKey: string) => {
   return `https://${url}/browse/${issueKey}`;
@@ -16,12 +21,16 @@ const DateCellFactory = (worklogs: WorklogGroups, url: string) => (
   const total =
     worklogsToRender &&
     worklogsToRender.reduce((sum, worklog) => sum + worklog.timeSpent, 0);
+  const fullDateLogged = total === FULL_WORKDAY;
+
   return (
     <div className="ant-fullcalendar-date">
       <div className="ant-fullcalendar-value callendar-cell__header">
         {worklogsToRender && (
           <span className="callendar-cell__total-time">
-            Total: {formatDuration(total)}
+            <Text type={fullDateLogged ? undefined : "warning"}>
+              Total: {formatDuration(total)}{" "}
+            </Text>
           </span>
         )}
         <span className="callendar-cell__day">{value.date()}</span>
