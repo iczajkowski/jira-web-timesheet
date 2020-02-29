@@ -1,6 +1,6 @@
 import React, { FormEvent } from "react";
 import "./LoginForm.css";
-import { Button, Form, Input, Typography } from "antd";
+import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import { LoginRequest } from "../../models/LoginRequest";
@@ -47,6 +47,12 @@ const LoginForm: React.FunctionComponent<Props & FormComponentProps> = ({
         {getFieldDecorator("apiToken", {
           rules: [{ required: true, message: "Please input token" }]
         })(<Input placeholder="Token" />)}
+      </Form.Item>
+      <Form.Item>
+        {getFieldDecorator("rememberMe", {
+          valuePropName: "checked",
+          initialValue: true
+        })(<Checkbox>Remember me</Checkbox>)}
       </Form.Item>
       <Button
         loading={isLoggingIn}

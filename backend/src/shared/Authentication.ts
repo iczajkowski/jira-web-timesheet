@@ -3,37 +3,41 @@ import { sign, verify } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import { UNAUTHORIZED } from "http-status-codes";
 import moment from "moment";
+import { AuthenticateRequest } from "../models/authenticate-request";
 
 const ACCESS_TOKEN = "access_token";
 const DECODED_CONFIG = "decoded_config";
 
-const generateJWT = (config: ClientConfig) => {
-  return sign(
-    {
-      data: config
-    },
-    process.env.JWT_PRIVATE as string,
-    {
-      expiresIn: "1h"
-    }
-  );
+const generateJWT = (config: AuthenticateRequest) => {
+  const options = config.rememberMe
+    ? {}
+    : {
+        expiresIn: "1h"
+      };
+  const data = Object.assign({}, config);
+  delete data.rememberMe;
+  return sign({ data }, process.env.JWT_PRIVATE as string, options);
 };
 
-const setToken = (res: Response, config: ClientConfig) => {
-  const token = generateJWT(config);
-  return prolongCookie(res, token);
+const setToken = (res: Response, request: AuthenticateRequest) => {
+  const token = generateJWT(request);
+  return prolongCookie(res, token, request.rememberMe);
 };
 
 const clearToken = (res: Response) => {
   return res.clearCookie(ACCESS_TOKEN);
 };
 
-const prolongCookie = (res: Response, token: string) => {
+const prolongCookie = (res: Response, token: string, rememberMe: boolean) => {
+  const expires = rememberMe
+    ? undefined
+    : moment()
+        .add(1, "hour")
+        .toDate();
+
   return res.cookie(ACCESS_TOKEN, token, {
     httpOnly: true,
-    expires: moment()
-      .add(1, "hour")
-      .toDate()
+    expires
   });
 };
 
@@ -50,7 +54,9 @@ const checkToken = (req: Request, res: Response, next: NextFunction) => {
       if (err) {
         return res.status(UNAUTHORIZED).end();
       } else {
-        setToken(res, decoded.data);
+        if (decoded.hasOwnProperty("exp")) {
+          setToken(res, decoded.data);
+        }
         req.params[DECODED_CONFIG] = decoded.data;
         next();
       }

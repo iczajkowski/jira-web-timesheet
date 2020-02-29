@@ -5,6 +5,7 @@ import userService from "./../services/UserService";
 import { ClientConfig } from "../jira-client/models/client-config";
 import { mapJiraError } from "../jira-client/jira-error-mapper";
 import { authentication } from "../shared/Authentication";
+import { AuthenticateRequest } from "../models/authenticate-request";
 
 // Init shared
 const router = Router();
@@ -28,7 +29,7 @@ router.post(
 );
 
 router.post("/authenticate", async (req: Request, res: Response) => {
-  const config = req.body as ClientConfig;
+  const config = req.body as AuthenticateRequest;
   if (!cofigValidator(config)) {
     return res.status(BAD_REQUEST).end();
   }
