@@ -25,8 +25,8 @@ export const getWorklogs = (request: WorklogsRequest) => {
       .then((worklogsResponse: AxiosResponse<any>) => {
         dispatch(loadedWorklogsAction(worklogsResponse.data));
       })
-      .catch(error => {
-        dispatch(errorLoadingWorklogsAction(error));
+      .catch(() => {
+        dispatch(errorLoadingWorklogsAction());
       });
   };
 };

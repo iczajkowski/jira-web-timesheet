@@ -7,8 +7,11 @@ import AppEntry from "./AppEntry";
 import { ConfigProvider } from "antd";
 import "moment/locale/en-gb";
 import en_GB from "antd/lib/locale-provider/en_GB";
+import interceptors from "./api/interceptors";
 
 const store = configureStore({ reducer: rootReducer });
+
+interceptors(store);
 
 const App: React.FC = () => {
   return (

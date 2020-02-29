@@ -6,7 +6,7 @@ import {
   setError
 } from "../components/Login/loginActions";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { User, UserWithUrl } from "../models/User";
+import { UserWithUrl } from "../models/User";
 import {
   clearUserAction,
   logoutAction,
