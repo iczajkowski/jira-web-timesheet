@@ -5,7 +5,7 @@ param (
 git checkout -b release/v.$version
 cd .\frontend\
 Remove-Item .\build\ -Confirm:$false -Recurse -ErrorAction Ignore
-npm run build
+($env:REACT_APP_DOMAIN = "jira-timesheet.iczajkow.pl") -and (npm run build)
 cd ..\backend\
 Remove-Item .\dist\ -Confirm:$false -Recurse -ErrorAction Ignore
 npm run build
