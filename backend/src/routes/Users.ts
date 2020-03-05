@@ -51,4 +51,30 @@ router.post("/authenticate", async (req: Request, res: Response) => {
   }
 });
 
+router.get(
+  "/search",
+  authentication.checkToken,
+  async (req: Request<any>, res: Response) => {
+    const { query } = req.query;
+    if (!query) {
+      return res.status(BAD_REQUEST).end();
+    }
+    const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
+    try {
+      const result = await userService.searchUsers(query, config);
+      console.log({ result });
+      return res
+        .status(OK)
+        .json(result)
+        .end();
+    } catch (error) {
+      const jiraError = mapJiraError(error);
+      const response = res.status(jiraError.httpStatusCode);
+      return jiraError.message
+        ? response.json({ message: jiraError.message })
+        : response.end();
+    }
+  }
+);
+
 export default router;
