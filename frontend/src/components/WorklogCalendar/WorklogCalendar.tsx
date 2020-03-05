@@ -6,6 +6,7 @@ import { groupWorklogsByDates } from "./groupWorklogsByDates";
 import DateCellFactory from "./DateCell";
 import { formatDuration } from "../../utils/duration";
 import "./WorklogCalendar.css";
+import UserSearch from "../UserSearch/UserSearch";
 
 interface WorklogCalendarProps {
   url: string;
@@ -83,6 +84,9 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
             title="Total logged:"
             value={formatDuration(sumTotalLoggedTime(worklogs))}
           />
+        </div>
+        <div className="worklog-calendar__user">
+          <UserSearch />
         </div>
         <Button.Group>
           <Button type="primary" onClick={backward}>
