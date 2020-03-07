@@ -7,13 +7,15 @@ import DateCellFactory from "./DateCell";
 import { formatDuration } from "../../utils/duration";
 import "./WorklogCalendar.css";
 import UserSearch from "../UserSearch/UserSearch";
+import { User } from "../../models/User";
 
 interface WorklogCalendarProps {
   url: string;
   isFetchingWorklogs: boolean;
+  userWorklogs: User;
   worklogs: Worklog[];
   userTimezone: string;
-  onViewChanged: (from: Date, to: Date) => void;
+  onViewChanged: (from: Date, to: Date, user: User) => void;
 }
 
 const sumTotalLoggedTime = (worklogs: Worklog[]): number => {
@@ -36,7 +38,8 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   onViewChanged,
   isFetchingWorklogs,
   userTimezone,
-  worklogs
+  worklogs,
+  userWorklogs
 }) => {
   const [selectedDate, setSelectedDate] = useState(moment());
 
@@ -49,7 +52,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     setSelectedDate(value);
     if (!value.startOf("month").isSame(selectedDate.startOf("month"))) {
       const dateSpan = getDateSpan(value);
-      onViewChanged(dateSpan.from, dateSpan.to);
+      onViewChanged(dateSpan.from, dateSpan.to, userWorklogs);
     }
   };
 
@@ -65,12 +68,12 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
 
   const refresh = () => {
     const dateSpan = getDateSpan(selectedDate);
-    onViewChanged(dateSpan.from, dateSpan.to);
+    onViewChanged(dateSpan.from, dateSpan.to, userWorklogs);
   };
 
   useEffect(() => {
     const dateSpan = getDateSpan(selectedDate);
-    onViewChanged(dateSpan.from, dateSpan.to);
+    onViewChanged(dateSpan.from, dateSpan.to, userWorklogs);
   }, []);
 
   const groupedWorklogs = groupWorklogsByDates(worklogs, userTimezone);
@@ -86,7 +89,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
           />
         </div>
         <div className="worklog-calendar__user">
-          <UserSearch />
+          <UserSearch user={userWorklogs} />
         </div>
         <Button.Group>
           <Button type="primary" onClick={backward}>

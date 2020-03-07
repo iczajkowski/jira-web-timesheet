@@ -1,14 +1,17 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { WorklogActionTypes } from "./worklogActions";
+import { User } from "../../models/User";
 
 export interface WorklogState {
   isFetchingWorklogs: boolean;
+  user: User | null;
   worklogs: any;
   error: any;
 }
 
 export const defaultState: WorklogState = {
   isFetchingWorklogs: false,
+  user: null,
   worklogs: null,
   error: null
 };

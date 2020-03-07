@@ -62,7 +62,6 @@ router.get(
     const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
     try {
       const result = await userService.searchUsers(query, config);
-      console.log({ result });
       return res
         .status(OK)
         .json(result)

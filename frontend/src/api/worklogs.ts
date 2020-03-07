@@ -21,7 +21,7 @@ export const getWorklogs = (request: WorklogsRequest) => {
     dispatch(loadWorklogsAction());
     const { from, to } = formatDates(request);
     axios
-      .get(`/api/worklogs?from=${from}&to=${to}`)
+      .get(`/api/worklogs?from=${from}&to=${to}&accountId=${request.accountId}`)
       .then((worklogsResponse: AxiosResponse<any>) => {
         dispatch(loadedWorklogsAction(worklogsResponse.data));
       })
