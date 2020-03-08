@@ -1,4 +1,3 @@
-import { WorklogsRequest } from "../models/WorklogsRequest";
 import { Dispatch } from "redux";
 import {
   errorLoadingWorklogsAction,
@@ -7,6 +6,7 @@ import {
 } from "../components/Home/worklogActions";
 import axios, { AxiosResponse } from "axios";
 import moment from "moment";
+import { User } from "../models/User";
 
 const formatDates = ({ from, to }: { from: Date; to: Date }) => {
   const format = "YYYY-MM-DD";
@@ -16,12 +16,20 @@ const formatDates = ({ from, to }: { from: Date; to: Date }) => {
   };
 };
 
-export const getWorklogs = (request: WorklogsRequest) => {
+export interface GetWorklogsContext {
+  user: User;
+  from: Date;
+  to: Date;
+}
+
+export const getWorklogs = ({ from, to, user }: GetWorklogsContext) => {
   return (dispatch: Dispatch) => {
-    dispatch(loadWorklogsAction());
-    const { from, to } = formatDates(request);
+    const formattedDate = formatDates({ from, to });
+    dispatch(loadWorklogsAction({ user }));
     axios
-      .get(`/api/worklogs?from=${from}&to=${to}&accountId=${request.accountId}`)
+      .get(
+        `/api/worklogs?from=${formattedDate.from}&to=${formattedDate.to}&accountId=${user.accountId}`
+      )
       .then((worklogsResponse: AxiosResponse<any>) => {
         dispatch(loadedWorklogsAction(worklogsResponse.data));
       })

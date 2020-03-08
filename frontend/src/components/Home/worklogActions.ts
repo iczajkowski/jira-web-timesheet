@@ -1,4 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
+import { User } from "../../models/User";
 
 export enum WorklogActionTypes {
   LoadWorklogs = "WORKLOGS_LOAD",
@@ -6,7 +7,11 @@ export enum WorklogActionTypes {
   ErrorLoadingWorklogs = "WORKLOGS_ERROR"
 }
 
-export const loadWorklogsAction = createAction<void>(
+export interface LoadWorklogsPayload {
+  user: User;
+}
+
+export const loadWorklogsAction = createAction<LoadWorklogsPayload>(
   WorklogActionTypes.LoadWorklogs
 );
 export const loadedWorklogsAction = createAction<any>(

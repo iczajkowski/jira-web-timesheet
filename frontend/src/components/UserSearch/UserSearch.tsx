@@ -27,11 +27,17 @@ const fetchUsers = (
 
 export interface UserSearchProps {
   user: User;
-  onUserSelect?: (user: User) => void;
+  onUserSelect: (user: User) => void;
 }
 
-const UserSearch: React.FC<UserSearchProps> = ({ user }) => {
-  const [state, setState] = useState({
+interface UserSearchState {
+  data: User[];
+  value: string | undefined;
+  fetching: boolean;
+}
+
+const UserSearch: React.FC<UserSearchProps> = ({ user, onUserSelect }) => {
+  const [state, setState] = useState<UserSearchState>({
     data: [],
     value: user.displayName,
     fetching: false
@@ -40,10 +46,11 @@ const UserSearch: React.FC<UserSearchProps> = ({ user }) => {
   const onSearch = debounce(fetchUsers(setState as any), 800) as any;
 
   const onChange = (userKey: string) => {
-    const user = (state.data.find(
-      (userData: User) => userData.key === userKey
-    ) as unknown) as User;
-    setState({ value: user.displayName, data: [], fetching: false } as any);
+    const user = state.data.find((userData: User) => userData.key === userKey);
+    setState({ value: user && user.displayName, data: [], fetching: false });
+    if (user) {
+      onUserSelect(user);
+    }
   };
 
   return (

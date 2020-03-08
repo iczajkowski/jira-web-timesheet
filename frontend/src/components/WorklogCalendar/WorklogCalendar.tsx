@@ -56,6 +56,13 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     }
   };
 
+  const userSelected = (user: User) => {
+    if (user.key !== userWorklogs.key) {
+      const dateSpan = getDateSpan(selectedDate);
+      onViewChanged(dateSpan.from, dateSpan.to, user);
+    }
+  };
+
   const forward = () => {
     const previousMonth = selectedDate.clone().add(1, "month");
     dateChanged(previousMonth);
@@ -89,7 +96,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
           />
         </div>
         <div className="worklog-calendar__user">
-          <UserSearch user={userWorklogs} />
+          <UserSearch user={userWorklogs} onUserSelect={userSelected} />
         </div>
         <Button.Group>
           <Button type="primary" onClick={backward}>

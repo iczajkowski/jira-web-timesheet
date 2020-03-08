@@ -10,7 +10,7 @@ const Home: React.FC = () => {
   const dispatch = useDispatch();
 
   const fetchWorklogs = (from: Date, to: Date, user: User) => {
-    getWorklogs({ from, to, accountId: user.accountId })(dispatch);
+    getWorklogs({ from, to, user: user })(dispatch);
   };
 
   const isFetchingWorklogs = useSelector(
