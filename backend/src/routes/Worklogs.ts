@@ -16,7 +16,8 @@ router.get(
   authentication.checkToken,
   async (req: Request<any>, res: Response) => {
     const { from, to } = toDates(req.query);
-    if (!from.isValid() || !to.isValid()) {
+    const { accountId } = req.query;
+    if (!from.isValid() || !to.isValid() || !accountId) {
       return res.status(BAD_REQUEST).end();
     }
     const config = req.params[authentication.DECODED_CONFIG];
@@ -24,7 +25,8 @@ router.get(
       const worklogs = await worklogService.getWorklogs({
         config,
         from: from.toDate(),
-        to: to.toDate()
+        to: to.toDate(),
+        accountId
       });
       return res.status(OK).json(worklogs);
     } catch (e) {

@@ -6,3 +6,7 @@
 .worklog-calendar__total-summary {
   flex: 1 1 auto;
 }
+
+.worklog-calendar__user {
+  margin-right: 1rem;
+}

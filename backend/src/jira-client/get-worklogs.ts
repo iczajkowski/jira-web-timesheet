@@ -8,14 +8,14 @@ export interface WorklogClientInput {
   from: Date;
   to: Date;
   jiraClient: JiraClient;
-  userName: string;
+  accountId: string;
 }
 
 export const getWorklogs = async ({
   from,
   to,
   jiraClient,
-  userName
+  accountId
 }: WorklogClientInput) => {
   const searchTo = moment(to)
     .add(1, "day")
@@ -24,17 +24,17 @@ export const getWorklogs = async ({
     jiraClient,
     from,
     searchTo,
-    userName
+    accountId
   );
 
   return await getIssueWorklogs(issuesResponse.issues, jiraClient, worklog =>
-    filterWorklog(worklog, userName, from, searchTo)
+    filterWorklog(worklog, accountId, from, searchTo)
   );
 };
 
 const filterWorklog = (
   worklog: Worklog,
-  name: string,
+  accountId: string,
   from: Date,
   to: Date
 ) => {
@@ -42,5 +42,5 @@ const filterWorklog = (
   const isBetween =
     momentStarted.isSameOrAfter(moment(from)) &&
     momentStarted.isSameOrBefore(moment(to));
-  return worklog.author.displayName === name && isBetween;
+  return isBetween && worklog.author.accountId === accountId;
 };
