@@ -9,6 +9,8 @@ export enum WorklogActionTypes {
 
 export interface LoadWorklogsPayload {
   user: User;
+  month: number;
+  year: number;
 }
 
 export const loadWorklogsAction = createAction<LoadWorklogsPayload>(

@@ -15,7 +15,9 @@ interface WorklogCalendarProps {
   userWorklogs: User;
   worklogs: Worklog[];
   userTimezone: string;
-  onViewChanged: (from: Date, to: Date, user: User) => void;
+  month: number;
+  year: number;
+  onViewChanged: (year: number, month: number, user: User) => void;
 }
 
 const sumTotalLoggedTime = (worklogs: Worklog[]): number => {
@@ -33,33 +35,37 @@ const sumTotalLoggedTime = (worklogs: Worklog[]): number => {
   );
 };
 
+const getYearAndMonth = (moment: Moment) => {
+  return {
+    year: moment.year(),
+    month: moment.month()
+  };
+};
+
 const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   url,
   onViewChanged,
   isFetchingWorklogs,
   userTimezone,
   worklogs,
+  month,
+  year,
   userWorklogs
 }) => {
-  const [selectedDate, setSelectedDate] = useState(moment());
-
-  const getDateSpan = (current: Moment) => ({
-    from: current.startOf("month").toDate(),
-    to: current.endOf("month").toDate()
-  });
+  const [selectedDate, setSelectedDate] = useState(moment([year, month]));
 
   const dateChanged = (value: any) => {
     setSelectedDate(value);
     if (!value.startOf("month").isSame(selectedDate.startOf("month"))) {
-      const dateSpan = getDateSpan(value);
-      onViewChanged(dateSpan.from, dateSpan.to, userWorklogs);
+      const { year, month } = getYearAndMonth(value);
+      onViewChanged(year, month, userWorklogs);
     }
   };
 
   const userSelected = (user: User) => {
     if (user.key !== userWorklogs.key) {
-      const dateSpan = getDateSpan(selectedDate);
-      onViewChanged(dateSpan.from, dateSpan.to, user);
+      const { year, month } = getYearAndMonth(selectedDate);
+      onViewChanged(year, month, user);
     }
   };
 
@@ -74,14 +80,9 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   };
 
   const refresh = () => {
-    const dateSpan = getDateSpan(selectedDate);
-    onViewChanged(dateSpan.from, dateSpan.to, userWorklogs);
+    const { year, month } = getYearAndMonth(selectedDate);
+    onViewChanged(year, month, userWorklogs);
   };
-
-  useEffect(() => {
-    const dateSpan = getDateSpan(selectedDate);
-    onViewChanged(dateSpan.from, dateSpan.to, userWorklogs);
-  }, []);
 
   const groupedWorklogs = groupWorklogsByDates(worklogs, userTimezone);
   const dateCellRenderer = DateCellFactory(groupedWorklogs, url);

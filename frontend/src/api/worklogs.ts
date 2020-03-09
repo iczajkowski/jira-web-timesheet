@@ -25,7 +25,15 @@ export interface GetWorklogsContext {
 export const getWorklogs = ({ from, to, user }: GetWorklogsContext) => {
   return (dispatch: Dispatch) => {
     const formattedDate = formatDates({ from, to });
-    dispatch(loadWorklogsAction({ user }));
+    const month = from.getMonth();
+    const year = from.getFullYear();
+    dispatch(
+      loadWorklogsAction({
+        user,
+        month,
+        year
+      })
+    );
     axios
       .get(
         `/api/worklogs?from=${formattedDate.from}&to=${formattedDate.to}&accountId=${user.accountId}`

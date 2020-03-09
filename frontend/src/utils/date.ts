@@ -7,3 +7,8 @@ export const getDateInTimezone = (
 ): Moment => {
   return moment.tz(moment(startDate), userTimezone);
 };
+
+export const getDateSpan = (current: Moment) => ({
+  from: current.startOf("month").toDate(),
+  to: current.endOf("month").toDate()
+});
