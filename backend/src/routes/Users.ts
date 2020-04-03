@@ -15,7 +15,7 @@ router.get(
   authentication.checkToken,
   async (req: Request<any>, res: Response) => {
     const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
-    const user = await userService.getUser(config);
+    const user = await userService.getCurrentUser(config);
     return res.status(OK).json({ user, url: config.url });
   }
 );
@@ -34,7 +34,7 @@ router.post("/authenticate", async (req: Request, res: Response) => {
     return res.status(BAD_REQUEST).end();
   }
   try {
-    const user = await userService.getUser(config);
+    const user = await userService.getCurrentUser(config);
     if (!user) {
       return res.status(UNAUTHORIZED);
     }
@@ -65,6 +65,31 @@ router.get(
       return res
         .status(OK)
         .json(result)
+        .end();
+    } catch (error) {
+      const jiraError = mapJiraError(error);
+      const response = res.status(jiraError.httpStatusCode);
+      return jiraError.message
+        ? response.json({ message: jiraError.message })
+        : response.end();
+    }
+  }
+);
+
+router.get(
+  "/:accountId",
+  authentication.checkToken,
+  async (req: Request<any>, res: Response) => {
+    const { accountId } = req.params;
+    if (!accountId) {
+      return res.status(BAD_REQUEST).end();
+    }
+    try {
+      const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
+      const user = await userService.getUser(accountId, config);
+      return res
+        .status(OK)
+        .json(user)
         .end();
     } catch (error) {
       const jiraError = mapJiraError(error);

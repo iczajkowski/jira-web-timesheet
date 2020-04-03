@@ -46,7 +46,9 @@ const UserSearch: React.FC<UserSearchProps> = ({ user, onUserSelect }) => {
   const onSearch = debounce(fetchUsers(setState as any), 800) as any;
 
   const onChange = (userKey: string) => {
-    const user = state.data.find((userData: User) => userData.key === userKey);
+    const user = state.data.find(
+      (userData: User) => userData.accountId === userKey
+    );
     setState({ value: user && user.displayName, data: [], fetching: false });
     if (user) {
       onUserSelect(user);
@@ -63,10 +65,14 @@ const UserSearch: React.FC<UserSearchProps> = ({ user, onUserSelect }) => {
         onSearch={onSearch}
         onChange={onChange}
         showArrow={false}
+        filterOption={false}
+        defaultActiveFirstOption={false}
         notFoundContent={state.fetching ? <Spin size="small" /> : null}
       >
         {(state.data as User[]).map(value => (
-          <Select.Option key={value.key}>{value.displayName}</Select.Option>
+          <Select.Option key={value.accountId}>
+            {value.displayName}
+          </Select.Option>
         ))}
       </Select>
     </div>

@@ -9,6 +9,21 @@ import { getDateSpan } from "../../utils/date";
 import moment from "moment";
 import { isNil } from "lodash";
 import { useHistory } from "react-router-dom";
+import { useQuery } from "../../utils/hooks";
+import { getUser } from "../../api/users";
+
+const getInitialDate = ({
+  month,
+  year
+}: {
+  month: string | null;
+  year: string | null;
+}) => {
+  if (month && year) {
+    return moment([year, month]);
+  }
+  return moment();
+};
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -24,22 +39,26 @@ const Home: React.FC = () => {
   const appUser = useSelector(
     (state: RootState) => state.appState.user
   ) as User;
+
   const url = useSelector((state: RootState) => state.appState.url) || "";
+
   const userTimezone = useSelector((state: RootState) => {
     const user = state.appState.user;
     return user && user.timeZone;
   }) as string;
+
   const errorWhileFetchingWorklogs = useSelector(
     (state: RootState) => state.worklogs.error
   );
   const history = useHistory();
+  const query = useQuery();
 
   const { worklogs, month, year, user } = useSelector(
     (state: RootState) => state.worklogs
   );
 
   const setQueryParams = (year: number, month: number, user: User) => {
-    history.push(`?year=${year}&month=${month}&user=${user.accountId}`);
+    history.push(`?&year=${year}&month=${month}&user=${user.accountId}`);
   };
 
   useEffect(() => {
@@ -49,8 +68,21 @@ const Home: React.FC = () => {
   });
 
   useEffect(() => {
-    const { from, to } = getDateSpan(moment());
-    fetchWorklogs(from, to, appUser);
+    const { from, to } = getDateSpan(
+      getInitialDate({ year: query.get("year"), month: query.get("month") })
+    );
+    const accountId = query.get("user");
+    if (accountId) {
+      getUser(accountId as string)
+        .then(({ data }) => {
+          fetchWorklogs(from, to, data);
+        })
+        .catch(_ => {
+          message.error(`Could not fetch user with accountID: ${accountId}`);
+        });
+    } else {
+      fetchWorklogs(from, to, appUser);
+    }
   }, []);
 
   const onViewChanged = (year: number, month: number, user: User) => {

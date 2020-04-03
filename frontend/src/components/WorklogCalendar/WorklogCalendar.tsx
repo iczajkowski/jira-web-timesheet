@@ -1,5 +1,5 @@
 import moment, { Moment } from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Calendar, Icon, Spin, Statistic } from "antd";
 import { Worklog } from "../../models/Worklog";
 import { groupWorklogsByDates } from "./groupWorklogsByDates";
@@ -63,7 +63,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   };
 
   const userSelected = (user: User) => {
-    if (user.key !== userWorklogs.key) {
+    if (user.accountId !== userWorklogs.accountId) {
       const { year, month } = getYearAndMonth(selectedDate);
       onViewChanged(year, month, user);
     }

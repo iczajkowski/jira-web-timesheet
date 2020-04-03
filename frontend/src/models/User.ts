@@ -5,7 +5,6 @@ export interface UserWithUrl {
 
 export interface User {
   self: string;
-  key: string;
   accountId: string;
   name: string;
   emailAddress: string;
