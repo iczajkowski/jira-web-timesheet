@@ -43,7 +43,7 @@ const Home: React.FC = () => {
   const url = useSelector((state: RootState) => state.appState.url) || "";
 
   const userTimezone = useSelector((state: RootState) => {
-    const user = state.appState.user;
+    const user = state.worklogs.user;
     return user && user.timeZone;
   }) as string;
 
