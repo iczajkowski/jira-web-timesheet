@@ -8,5 +8,6 @@
 }
 
 .worklog-calendar__user {
+  display: flex;
   margin-right: 1rem;
 }

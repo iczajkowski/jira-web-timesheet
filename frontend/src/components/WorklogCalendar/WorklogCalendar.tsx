@@ -97,6 +97,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
           />
         </div>
         <div className="worklog-calendar__user">
+          <Button type="link">Show mine</Button>
           <UserSearch user={userWorklogs} onUserSelect={userSelected} />
         </div>
         <Button.Group>
