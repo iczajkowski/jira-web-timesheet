@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getWorklogs } from "../../api/worklogs";
 import { RootState } from "../../reducer";
 import WorklogCalendar from "../WorklogCalendar/WorklogCalendar";
 import { message } from "antd";
@@ -11,6 +10,7 @@ import { isNil } from "lodash";
 import { useHistory } from "react-router-dom";
 import { useQuery } from "../../utils/hooks";
 import { getUser } from "../../api/users";
+import { getWorklogsDispatch } from "../../dispatchers/worklogs";
 
 const getInitialDate = ({
   month,
@@ -29,7 +29,7 @@ const Home: React.FC = () => {
   const dispatch = useDispatch();
 
   const fetchWorklogs = (from: Date, to: Date, user: User) => {
-    getWorklogs({ from, to, user: user })(dispatch);
+    getWorklogsDispatch({ from, to, user: user })(dispatch);
   };
 
   const isFetchingWorklogs = useSelector(
@@ -77,7 +77,7 @@ const Home: React.FC = () => {
         .then(({ data }) => {
           fetchWorklogs(from, to, data);
         })
-        .catch(_ => {
+        .catch(() => {
           message.error(`Could not fetch user with accountID: ${accountId}`);
         });
     } else {

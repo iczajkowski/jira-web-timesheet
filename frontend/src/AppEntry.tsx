@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import { RootState } from "./reducer";
 import React from "react";
-import { checkAuthenticate } from "./api/authenticate";
+import { checkAuthenticateDispatch } from "./dispatchers/authenticate";
 import Routes from "./Routes";
 
 interface Props {
@@ -23,6 +23,6 @@ const mapStateToProps = (state: RootState) => ({
   isAuthenticated: state.appState.isAuthenticated
 });
 const mapDispatchToProps = {
-  checkAuthenticationConnect: checkAuthenticate
+  checkAuthenticationConnect: checkAuthenticateDispatch
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AppEntry as any);

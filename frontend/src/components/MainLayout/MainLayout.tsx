@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../reducer";
 import UserInfo from "../UserInfo/UserInfo";
 import { User } from "../../models/User";
-import { logout } from "../../api/authenticate";
+import { logoutDispatch } from "../../dispatchers/authenticate";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 // @ts-ignore
 const MainLayout = ({ children }) => {
   const dispatch = useDispatch();
-  const onLogout = () => dispatch(logout());
+  const onLogout = () => dispatch(logoutDispatch());
   const user = useSelector((state: RootState) => state.appState.user) as User;
 
   return (

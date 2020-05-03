@@ -3,12 +3,12 @@ import "./LoginForm.css";
 import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { WrappedFormUtils } from "antd/lib/form/Form";
-import { LoginRequest } from "../../models/LoginRequest";
+import { AuthenticateRequest } from "../../api/users";
 
 const { Text } = Typography;
 
 interface Props {
-  onSubmit: (request: LoginRequest) => void;
+  onSubmit: (request: AuthenticateRequest) => void;
   isLoggingIn?: boolean;
   loginError?: any;
   form?: WrappedFormUtils;
@@ -22,7 +22,7 @@ const LoginForm: React.FunctionComponent<Props & FormComponentProps> = ({
 }) => {
   const onFormSubmit = (event: FormEvent) => {
     event.preventDefault();
-    form.validateFields((error: any, values: LoginRequest) => {
+    form.validateFields((error: any, values: AuthenticateRequest) => {
       if (!error) {
         onSubmit(values);
       }

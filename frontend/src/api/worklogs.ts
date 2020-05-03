@@ -1,12 +1,12 @@
-import { Dispatch } from "redux";
-import {
-  errorLoadingWorklogsAction,
-  loadedWorklogsAction,
-  loadWorklogsAction
-} from "../components/Home/worklogActions";
-import axios, { AxiosResponse } from "axios";
-import moment from "moment";
+import axios from "axios";
 import { User } from "../models/User";
+import moment from "moment";
+
+export interface GetWorklogsParams {
+  user: User;
+  from: Date;
+  to: Date;
+}
 
 const formatDates = ({ from, to }: { from: Date; to: Date }) => {
   const format = "YYYY-MM-DD";
@@ -16,33 +16,9 @@ const formatDates = ({ from, to }: { from: Date; to: Date }) => {
   };
 };
 
-export interface GetWorklogsContext {
-  user: User;
-  from: Date;
-  to: Date;
-}
-
-export const getWorklogs = ({ from, to, user }: GetWorklogsContext) => {
-  return (dispatch: Dispatch) => {
-    const formattedDate = formatDates({ from, to });
-    const month = from.getMonth();
-    const year = from.getFullYear();
-    dispatch(
-      loadWorklogsAction({
-        user,
-        month,
-        year
-      })
-    );
-    axios
-      .get(
-        `/api/worklogs?from=${formattedDate.from}&to=${formattedDate.to}&accountId=${user.accountId}`
-      )
-      .then((worklogsResponse: AxiosResponse<any>) => {
-        dispatch(loadedWorklogsAction(worklogsResponse.data));
-      })
-      .catch(() => {
-        dispatch(errorLoadingWorklogsAction());
-      });
-  };
+export const getWorklogs = ({ from, to, user }: GetWorklogsParams) => {
+  const formattedDate = formatDates({ from, to });
+  return axios.get(
+    `/api/worklogs?from=${formattedDate.from}&to=${formattedDate.to}&accountId=${user.accountId}`
+  );
 };

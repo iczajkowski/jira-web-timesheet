@@ -2,9 +2,9 @@ import * as React from "react";
 import { useState } from "react";
 import { Select, Spin } from "antd";
 import "./UserSearch.css";
-import { searchUsers } from "../../api/users";
 import debounce from "lodash/debounce";
 import { User } from "../../models/User";
+import { searchUsers } from "../../api/users";
 
 const fetchUsers = (
   setState: (searchState: { data: User[]; fetching: boolean }) => void

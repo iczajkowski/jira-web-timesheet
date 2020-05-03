@@ -1,11 +1,10 @@
-import { LoginRequest } from "../models/LoginRequest";
 import { Dispatch } from "react";
 import {
   loginAction,
   loginSuccess,
   setError
 } from "../components/Login/loginActions";
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { UserWithUrl } from "../models/User";
 import {
   clearUserAction,
@@ -13,15 +12,20 @@ import {
   setAuthenticatedAction,
   setUserAction
 } from "../appActions";
+import {
+  authenticate,
+  AuthenticateRequest,
+  current,
+  logout
+} from "../api/users";
 
-export const authenticate = (request: LoginRequest) => {
+export const authenticateDispatch = (request: AuthenticateRequest) => {
   return (dispatch: Dispatch<any>) => {
     dispatch(loginAction());
-    axios
-      .post("/api/users/authenticate", request)
-      .then(_ => {
+    authenticate(request)
+      .then(() => {
         dispatch(loginSuccess());
-        return axios.get("/api/users/current");
+        return current();
       })
       .then((userResponse: AxiosResponse<UserWithUrl>) => {
         dispatch(setUserAction(userResponse.data));
@@ -33,10 +37,9 @@ export const authenticate = (request: LoginRequest) => {
   };
 };
 
-export const checkAuthenticate = () => {
+export const checkAuthenticateDispatch = () => {
   return (dispatch: Dispatch<any>) => {
-    axios
-      .get("/api/users/current")
+    current()
       .then((userResponse: AxiosResponse<UserWithUrl>) => {
         dispatch(setUserAction(userResponse.data));
         dispatch(setAuthenticatedAction(true));
@@ -47,9 +50,9 @@ export const checkAuthenticate = () => {
   };
 };
 
-export const logout = () => {
+export const logoutDispatch = () => {
   return (dispatch: Dispatch<any>) => {
     dispatch(logoutAction());
-    axios.post("api/users/logout").then(() => dispatch(clearUserAction()));
+    logout().then(() => dispatch(clearUserAction()));
   };
 };
