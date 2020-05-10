@@ -3,7 +3,7 @@ import "./LoginForm.css";
 import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { WrappedFormUtils } from "antd/lib/form/Form";
-import { AuthenticateRequest } from "../../api/users";
+import { AuthenticateRequest } from "../../../api/users";
 
 const { Text } = Typography;
 

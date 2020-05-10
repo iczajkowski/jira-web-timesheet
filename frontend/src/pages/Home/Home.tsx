@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../reducer";
-import WorklogCalendar from "../WorklogCalendar/WorklogCalendar";
+import WorklogCalendar from "./WorklogCalendar/WorklogCalendar";
 import { message } from "antd";
 import { User } from "../../models/User";
 import { getDateSpan } from "../../utils/date";

@@ -2,7 +2,7 @@ import React from "react";
 import { DATE_FORMAT, WorklogGroups } from "./groupWorklogsByDates";
 import { Moment } from "moment";
 import "./DateCell.css";
-import { formatDuration } from "../../utils/duration";
+import { formatDuration } from "../../../utils/duration";
 import { Typography } from "antd";
 
 const { Text } = Typography;

@@ -3,7 +3,7 @@ import { Icon, Layout } from "antd";
 import "./MainLayout.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../reducer";
-import UserInfo from "../UserInfo/UserInfo";
+import UserInfo from "../../pages/Home/UserInfo/UserInfo";
 import { User } from "../../models/User";
 import { logoutDispatch } from "../../dispatchers/authenticate";
 

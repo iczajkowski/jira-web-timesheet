@@ -3,7 +3,7 @@ import {
   loginAction,
   loginSuccess,
   setError
-} from "../components/Login/loginActions";
+} from "../pages/Login/loginActions";
 import { AxiosError, AxiosResponse } from "axios";
 import { UserWithUrl } from "../models/User";
 import {

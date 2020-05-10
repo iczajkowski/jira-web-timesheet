@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from "react";
-import { User } from "../../models/User";
+import { User } from "../../../models/User";
 import { Icon, Menu } from "antd";
 import SubMenu from "antd/es/menu/SubMenu";
 import "./UserInfo.css";

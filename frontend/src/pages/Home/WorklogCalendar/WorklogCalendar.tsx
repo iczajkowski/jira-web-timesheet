@@ -1,13 +1,13 @@
 import moment, { Moment } from "moment";
 import React, { useState, useEffect } from "react";
 import { Button, Calendar, Icon, Spin, Statistic } from "antd";
-import { Worklog } from "../../models/Worklog";
+import { Worklog } from "../../../models/Worklog";
 import { groupWorklogsByDates } from "./groupWorklogsByDates";
 import DateCellFactory from "./DateCell";
-import { formatDuration } from "../../utils/duration";
+import { formatDuration } from "../../../utils/duration";
 import "./WorklogCalendar.css";
 import UserSearch from "../UserSearch/UserSearch";
-import { User } from "../../models/User";
+import { User } from "../../../models/User";
 
 interface WorklogCalendarProps {
   url: string;
@@ -62,8 +62,8 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   });
 
   const dateChanged = (value: any) => {
+    setSelectedDate(value);
     if (!value.startOf("month").isSame(selectedDate.startOf("month"))) {
-      setSelectedDate(value);
       const { year, month } = getYearAndMonth(value);
       onViewChanged(year, month, userWorklogs);
     }

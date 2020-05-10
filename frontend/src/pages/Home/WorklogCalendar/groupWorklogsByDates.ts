@@ -1,5 +1,5 @@
-import { Worklog } from "../../models/Worklog";
-import { getDateInTimezone } from "../../utils/date";
+import { Worklog } from "../../../models/Worklog";
+import { getDateInTimezone } from "../../../utils/date";
 
 export interface WorklogModel {
   issueKey: string;
