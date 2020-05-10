@@ -1,5 +1,5 @@
 import moment, { Moment } from "moment";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Calendar, Icon, Spin, Statistic } from "antd";
 import { Worklog } from "../../models/Worklog";
 import { groupWorklogsByDates } from "./groupWorklogsByDates";
@@ -54,9 +54,16 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
 }) => {
   const [selectedDate, setSelectedDate] = useState(moment([year, month]));
 
+  useEffect(() => {
+    window.addEventListener("keyup", keydown);
+    return () => {
+      window.removeEventListener("keyup", keydown);
+    };
+  });
+
   const dateChanged = (value: any) => {
-    setSelectedDate(value);
     if (!value.startOf("month").isSame(selectedDate.startOf("month"))) {
+      setSelectedDate(value);
       const { year, month } = getYearAndMonth(value);
       onViewChanged(year, month, userWorklogs);
     }
@@ -70,18 +77,32 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   };
 
   const forward = () => {
-    const previousMonth = selectedDate.clone().add(1, "month");
-    dateChanged(previousMonth);
+    const nextMonth = selectedDate.clone().add(1, "month");
+    dateChanged(nextMonth);
   };
 
   const backward = () => {
-    const nextMonth = selectedDate.clone().subtract(1, "month");
-    dateChanged(nextMonth);
+    const previousMonth = selectedDate.clone().subtract(1, "month");
+    dateChanged(previousMonth);
   };
 
   const refresh = () => {
     const { year, month } = getYearAndMonth(selectedDate);
     onViewChanged(year, month, userWorklogs);
+  };
+
+  const keydown = ({ key }: { key: string }) => {
+    switch (key) {
+      case "ArrowLeft":
+        backward();
+        break;
+      case "ArrowRight":
+        forward();
+        break;
+      case "r":
+        refresh();
+        break;
+    }
   };
 
   const groupedWorklogs = groupWorklogsByDates(worklogs, userTimezone);
@@ -106,7 +127,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
           </Button>
           <Button type="primary" onClick={refresh}>
             <Icon type="sync" />
-            Refresh
+            Refresh(R)
           </Button>
           <Button type="primary" onClick={forward}>
             Forward

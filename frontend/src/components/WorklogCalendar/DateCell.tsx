@@ -39,8 +39,11 @@ const DateCellFactory = (worklogs: WorklogGroups, url: string) => (
         {worklogsToRender && (
           <div>
             <ul className="worklogs">
-              {worklogsToRender.map(worklog => (
-                <li className="worklog-list-item" key={worklog.issueKey}>
+              {worklogsToRender.map((worklog, index) => (
+                <li
+                  className="worklog-list-item"
+                  key={`${worklog.issueKey}_${index}`}
+                >
                   <a target="_blank" href={buildHref(url, worklog.issueKey)}>
                     {worklog.issueKey}
                   </a>
