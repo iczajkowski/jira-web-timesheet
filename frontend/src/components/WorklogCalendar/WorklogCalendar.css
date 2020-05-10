@@ -10,3 +10,7 @@
 .worklog-calendar__user {
   margin-right: 1rem;
 }
+
+.ant-fullcalendar-header .ant-radio-group {
+  display: none;
+}
