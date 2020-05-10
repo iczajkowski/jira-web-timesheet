@@ -61,9 +61,18 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     };
   });
 
-  const dateChanged = (value: any) => {
+  const dateChanged = (value: Moment | undefined) => {
+    if (!value) {
+      return;
+    }
+    const oldDate = selectedDate.clone();
     setSelectedDate(value);
-    if (!value.startOf("month").isSame(selectedDate.startOf("month"))) {
+    if (
+      !value
+        .clone()
+        .startOf("month")
+        .isSame(oldDate.clone().startOf("month"))
+    ) {
       const { year, month } = getYearAndMonth(value);
       onViewChanged(year, month, userWorklogs);
     }

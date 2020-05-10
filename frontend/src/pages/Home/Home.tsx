@@ -1,16 +1,20 @@
+import { Layout, message } from "antd";
+import { isNil } from "lodash";
+import moment from "moment";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../reducer";
-import WorklogCalendar from "./WorklogCalendar/WorklogCalendar";
-import { message } from "antd";
-import { User } from "../../models/User";
-import { getDateSpan } from "../../utils/date";
-import moment from "moment";
-import { isNil } from "lodash";
 import { useHistory } from "react-router-dom";
-import { useQuery } from "../../utils/hooks";
 import { getUser } from "../../api/users";
 import { getWorklogsDispatch } from "../../dispatchers/worklogs";
+import { User } from "../../models/User";
+import { RootState } from "../../reducer";
+import { getDateSpan } from "../../utils/date";
+import { useQuery } from "../../utils/hooks";
+import WorklogCalendar from "./WorklogCalendar/WorklogCalendar";
+
+import "./Home.css";
+
+const { Content, Sider } = Layout;
 
 const getInitialDate = ({
   month,
@@ -94,18 +98,22 @@ const Home: React.FC = () => {
   const initialized = () => !isNil(user) && !isNil(month) && !isNil(year);
 
   return (
-    <div style={{ background: "white", flex: 1 }}>
+    <div className="home__container">
       {initialized() ? (
-        <WorklogCalendar
-          url={url}
-          userWorklogs={user as User}
-          isFetchingWorklogs={isFetchingWorklogs}
-          onViewChanged={onViewChanged}
-          month={month as number}
-          year={year as number}
-          worklogs={worklogs}
-          userTimezone={userTimezone}
-        />
+        <Layout>
+          <Content className="home__content">
+            <WorklogCalendar
+              url={url}
+              userWorklogs={user as User}
+              isFetchingWorklogs={isFetchingWorklogs}
+              onViewChanged={onViewChanged}
+              month={month as number}
+              year={year as number}
+              worklogs={worklogs}
+              userTimezone={userTimezone}
+            />
+          </Content>
+        </Layout>
       ) : (
         ""
       )}
