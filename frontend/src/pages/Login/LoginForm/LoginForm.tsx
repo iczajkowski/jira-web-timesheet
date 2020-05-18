@@ -41,7 +41,7 @@ const LoginForm: React.FunctionComponent<Props & FormComponentProps> = ({
       <Form.Item>
         {getFieldDecorator("url", {
           rules: [{ required: true, message: "Please input URL" }]
-        })(<Input placeholder="URL" />)}
+        })(<Input addonBefore="https://" placeholder="URL" />)}
       </Form.Item>
       <Form.Item>
         {getFieldDecorator("apiToken", {
