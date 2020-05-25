@@ -1,7 +1,14 @@
 .home__container {
   display: flex;
+  padding: 2rem;
 }
 
 .home__content {
   background: white;
+  border: 1px solid #ebedf0;
+  padding: 1rem;
+}
+
+.home__sider {
+  height: 100%;
 }

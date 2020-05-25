@@ -15,9 +15,9 @@ interface WorklogCalendarProps {
   userWorklogs: User;
   worklogs: Worklog[];
   userTimezone: string;
-  month: number;
-  year: number;
-  onViewChanged: (year: number, month: number, user: User) => void;
+  selectedDate: moment.Moment;
+  onViewChanged: (selectedDate: moment.Moment, user: User) => void;
+  onRefresh: () => void;
 }
 
 const sumTotalLoggedTime = (worklogs: Worklog[]): number => {
@@ -35,25 +35,16 @@ const sumTotalLoggedTime = (worklogs: Worklog[]): number => {
   );
 };
 
-const getYearAndMonth = (moment: Moment) => {
-  return {
-    year: moment.year(),
-    month: moment.month()
-  };
-};
-
 const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   url,
   onViewChanged,
+  onRefresh,
   isFetchingWorklogs,
   userTimezone,
   worklogs,
-  month,
-  year,
+  selectedDate,
   userWorklogs
 }) => {
-  const [selectedDate, setSelectedDate] = useState(moment([year, month]));
-
   useEffect(() => {
     window.addEventListener("keyup", keydown);
     return () => {
@@ -65,23 +56,13 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     if (!value) {
       return;
     }
-    const oldDate = selectedDate.clone();
-    setSelectedDate(value);
-    if (
-      !value
-        .clone()
-        .startOf("month")
-        .isSame(oldDate.clone().startOf("month"))
-    ) {
-      const { year, month } = getYearAndMonth(value);
-      onViewChanged(year, month, userWorklogs);
-    }
+
+    onViewChanged(value, userWorklogs);
   };
 
   const userSelected = (user: User) => {
     if (user.accountId !== userWorklogs.accountId) {
-      const { year, month } = getYearAndMonth(selectedDate);
-      onViewChanged(year, month, user);
+      onViewChanged(selectedDate, user);
     }
   };
 
@@ -95,11 +76,6 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     dateChanged(previousMonth);
   };
 
-  const refresh = () => {
-    const { year, month } = getYearAndMonth(selectedDate);
-    onViewChanged(year, month, userWorklogs);
-  };
-
   const keydown = ({ key }: { key: string }) => {
     switch (key) {
       case "ArrowLeft":
@@ -109,7 +85,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
         forward();
         break;
       case "r":
-        refresh();
+        onRefresh();
         break;
     }
   };
@@ -134,7 +110,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
             <Icon type="left" />
             Backward
           </Button>
-          <Button type="primary" onClick={refresh}>
+          <Button type="primary" onClick={onRefresh}>
             <Icon type="sync" />
             Refresh(R)
           </Button>
