@@ -2,7 +2,10 @@ import moment, { Moment } from "moment";
 import React, { useState, useEffect } from "react";
 import { Button, Calendar, Icon, Spin, Statistic } from "antd";
 import { Worklog } from "../../../models/Worklog";
-import { groupWorklogsByDates } from "./groupWorklogsByDates";
+import {
+  groupWorklogsByDates,
+  WorklogGroups
+} from "../utils/groupWorklogsByDates";
 import DateCellFactory from "./DateCell";
 import { formatDuration } from "../../../utils/duration";
 import "./WorklogCalendar.css";
@@ -13,36 +16,21 @@ interface WorklogCalendarProps {
   url: string;
   isFetchingWorklogs: boolean;
   userWorklogs: User;
-  worklogs: Worklog[];
-  userTimezone: string;
+  worklogs: WorklogGroups;
   selectedDate: moment.Moment;
+  totalLoggedTime: number;
   onViewChanged: (selectedDate: moment.Moment, user: User) => void;
   onRefresh: () => void;
 }
-
-const sumTotalLoggedTime = (worklogs: Worklog[]): number => {
-  if (!worklogs) {
-    return 0;
-  }
-  return worklogs.reduce(
-    (sum, worklog) =>
-      sum +
-      worklog.worklogs.reduce(
-        (subSum, worklogItem) => subSum + worklogItem.timeSpentSeconds,
-        0
-      ),
-    0
-  );
-};
 
 const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   url,
   onViewChanged,
   onRefresh,
   isFetchingWorklogs,
-  userTimezone,
   worklogs,
   selectedDate,
+  totalLoggedTime,
   userWorklogs
 }) => {
   useEffect(() => {
@@ -90,8 +78,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     }
   };
 
-  const groupedWorklogs = groupWorklogsByDates(worklogs, userTimezone);
-  const dateCellRenderer = DateCellFactory(groupedWorklogs, url);
+  const dateCellRenderer = DateCellFactory(worklogs, url);
 
   return (
     <Spin spinning={isFetchingWorklogs}>
@@ -99,7 +86,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
         <div className="worklog-calendar__total-summary">
           <Statistic
             title="Total logged:"
-            value={formatDuration(sumTotalLoggedTime(worklogs))}
+            value={formatDuration(totalLoggedTime)}
           />
         </div>
         <div className="worklog-calendar__user">

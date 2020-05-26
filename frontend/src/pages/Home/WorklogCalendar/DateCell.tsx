@@ -1,17 +1,14 @@
 import React from "react";
-import { DATE_FORMAT, WorklogGroups } from "./groupWorklogsByDates";
+import { DATE_FORMAT, WorklogGroups } from "../utils/groupWorklogsByDates";
 import { Moment } from "moment";
 import "./DateCell.css";
 import { formatDuration } from "../../../utils/duration";
 import { Typography } from "antd";
+import { issueUrl } from "../utils/issueUrl";
 
 const { Text } = Typography;
 
 const FULL_WORKDAY = 8 * 3600;
-
-const buildHref = (url: string, issueKey: string) => {
-  return `https://${url}/browse/${issueKey}`;
-};
 
 const DateCellFactory = (worklogs: WorklogGroups, url: string) => (
   value: Moment
@@ -44,7 +41,7 @@ const DateCellFactory = (worklogs: WorklogGroups, url: string) => (
                   className="worklog-list-item"
                   key={`${worklog.issueKey}_${index}`}
                 >
-                  <a target="_blank" href={buildHref(url, worklog.issueKey)}>
+                  <a target="_blank" href={issueUrl(url, worklog.issueKey)}>
                     {worklog.issueKey}
                   </a>
                   <span>{formatDuration(worklog.timeSpent)}</span>

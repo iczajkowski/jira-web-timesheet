@@ -1,3 +1,8 @@
 .details-sider {
   height: 100%;
 }
+
+.issue__description {
+  display: flex;
+  justify-content: space-between;
+}

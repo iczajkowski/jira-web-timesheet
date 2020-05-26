@@ -14,6 +14,10 @@ import WorklogCalendar from "./WorklogCalendar/WorklogCalendar";
 
 import "./Home.css";
 import DetailsSider from "./DetailsSider/DetailsSider";
+import { groupWorklogsByDates } from "./utils/groupWorklogsByDates";
+import { Worklog } from "../../models/Worklog";
+import { sumTotalLoggedTime } from "./utils/sumTotalLoggedTime";
+import { getWorklogForDate } from "./utils/getWorklogForDate";
 
 const getInitialDate = ({
   month,
@@ -61,6 +65,9 @@ const Home: React.FC = () => {
   const { worklogs, month, year, day, user } = useSelector(
     (state: RootState) => state.worklogs
   );
+
+  const worklogsByDate = groupWorklogsByDates(worklogs, userTimezone);
+  const totalLoggedTime = sumTotalLoggedTime(worklogs);
 
   const [selectedDate, setSelectedDate] = useState(
     getInitialDate({ month, year, day })
@@ -121,15 +128,24 @@ const Home: React.FC = () => {
     }
   };
 
-  const onRefresh = () => {};
+  const onRefresh = () => {
+    if (user) {
+      const { from, to } = getDateSpan(selectedDate);
+      fetchWorklogs(from, to, user);
+    }
+  };
 
   const initialized = () => !isNil(user) && !isNil(month) && !isNil(year);
+  const worklogForSelectedDate = getWorklogForDate(
+    worklogsByDate,
+    selectedDate
+  );
 
   return (
     <div className="home__container">
       {initialized() ? (
         <Row gutter={24}>
-          <Col span={24} className="home__content">
+          <Col span={18} className="home__content">
             <WorklogCalendar
               url={url}
               userWorklogs={user as User}
@@ -137,13 +153,17 @@ const Home: React.FC = () => {
               selectedDate={selectedDate}
               onViewChanged={onViewChanged}
               onRefresh={onRefresh}
-              worklogs={worklogs}
-              userTimezone={userTimezone}
+              worklogs={worklogsByDate}
+              totalLoggedTime={totalLoggedTime}
             />
           </Col>
-          {/*<Col span={6} className="home__sider">*/}
-          {/*  <DetailsSider />*/}
-          {/*</Col>*/}
+          <Col span={6} className="home__sider">
+            <DetailsSider
+              jiraUrl={url}
+              selectedDate={selectedDate}
+              worklogs={worklogForSelectedDate}
+            />
+          </Col>
         </Row>
       ) : (
         ""
