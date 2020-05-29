@@ -109,7 +109,7 @@ const Home: React.FC = () => {
     }
   }, []);
 
-  const onViewChanged = (date: moment.Moment, user: User) => {
+  const onViewChanged = (date: moment.Moment, changedUser: User) => {
     setSelectedDate(date);
     const changedYear = date.year();
     const changedMonth = date.month();
@@ -118,13 +118,17 @@ const Home: React.FC = () => {
       year: changedYear,
       month: changedMonth,
       day: changedDay,
-      user: user.accountId
+      user: changedUser.accountId
     });
 
-    if (changedMonth !== month || changedYear !== year) {
+    if (
+      changedMonth !== month ||
+      changedYear !== year ||
+      (user && user.accountId) !== changedUser.accountId
+    ) {
       const { from, to } = getDateSpan(moment([changedYear, changedMonth]));
 
-      fetchWorklogs(from, to, user);
+      fetchWorklogs(from, to, changedUser);
     }
   };
 
