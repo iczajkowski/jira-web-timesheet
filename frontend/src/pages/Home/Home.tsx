@@ -1,4 +1,4 @@
-import { Col, Layout, message, Row } from "antd";
+import { Col, Layout, message, Modal, Row } from "antd";
 import { isNil } from "lodash";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -11,13 +11,13 @@ import { RootState } from "../../reducer";
 import { getDateSpan } from "../../utils/date";
 import { useQuery } from "../../utils/hooks";
 import WorklogCalendar from "./WorklogCalendar/WorklogCalendar";
-
 import "./Home.css";
 import DetailsSider from "./DetailsSider/DetailsSider";
 import { groupWorklogsByDates } from "./utils/groupWorklogsByDates";
 import { Worklog } from "../../models/Worklog";
 import { sumTotalLoggedTime } from "./utils/sumTotalLoggedTime";
 import { getWorklogForDate } from "./utils/getWorklogForDate";
+import AddWorklogForm from "./AddWorklogForm/AddWorklogForm";
 
 const getInitialDate = ({
   month,
@@ -41,6 +41,9 @@ const Home: React.FC = () => {
     getWorklogsDispatch({ from, to, user: user })(dispatch);
   };
 
+  const history = useHistory();
+  const query = useQuery();
+
   const isFetchingWorklogs = useSelector(
     (state: RootState) => state.worklogs.isFetchingWorklogs
   );
@@ -59,8 +62,6 @@ const Home: React.FC = () => {
   const errorWhileFetchingWorklogs = useSelector(
     (state: RootState) => state.worklogs.error
   );
-  const history = useHistory();
-  const query = useQuery();
 
   const { worklogs, month, year, day, user } = useSelector(
     (state: RootState) => state.worklogs
@@ -72,6 +73,8 @@ const Home: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState(
     getInitialDate({ month, year, day })
   );
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const setQueryParams = (keys: { [key: string]: string | number }) => {
     const urlParams = new URLSearchParams();
@@ -139,6 +142,14 @@ const Home: React.FC = () => {
     }
   };
 
+  const onShowModal = () => {
+    setModalVisible(true);
+  };
+
+  const onHideModal = () => {
+    setModalVisible(false);
+  };
+
   const initialized = () => !isNil(user) && !isNil(month) && !isNil(year);
   const worklogForSelectedDate = getWorklogForDate(
     worklogsByDate,
@@ -148,27 +159,33 @@ const Home: React.FC = () => {
   return (
     <div className="home__container">
       {initialized() ? (
-        <Row gutter={24}>
-          <Col span={18} className="home__content">
-            <WorklogCalendar
-              url={url}
-              userWorklogs={user as User}
-              isFetchingWorklogs={isFetchingWorklogs}
-              selectedDate={selectedDate}
-              onViewChanged={onViewChanged}
-              onRefresh={onRefresh}
-              worklogs={worklogsByDate}
-              totalLoggedTime={totalLoggedTime}
-            />
-          </Col>
-          <Col span={6} className="home__sider">
-            <DetailsSider
-              jiraUrl={url}
-              selectedDate={selectedDate}
-              worklogs={worklogForSelectedDate}
-            />
-          </Col>
-        </Row>
+        <>
+          <Row gutter={24}>
+            <Col span={18} className="home__content">
+              <WorklogCalendar
+                url={url}
+                userWorklogs={user as User}
+                isFetchingWorklogs={isFetchingWorklogs}
+                selectedDate={selectedDate}
+                onViewChanged={onViewChanged}
+                onRefresh={onRefresh}
+                worklogs={worklogsByDate}
+                totalLoggedTime={totalLoggedTime}
+              />
+            </Col>
+            <Col span={6} className="home__sider">
+              <DetailsSider
+                jiraUrl={url}
+                selectedDate={selectedDate}
+                worklogs={worklogForSelectedDate}
+                onAddWorklogClick={onShowModal}
+              />
+            </Col>
+          </Row>
+          <Modal title="Log Time" visible={modalVisible} onCancel={onHideModal}>
+            <AddWorklogForm />
+          </Modal>
+        </>
       ) : (
         ""
       )}
