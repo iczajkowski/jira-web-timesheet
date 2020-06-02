@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { authentication } from "../shared/Authentication";
 import { BAD_REQUEST, OK } from "http-status-codes";
 import { ClientConfig } from "../jira-client/models/client-config";
+import issueService from "./../services/IssueService";
 
 const router = Router();
 
@@ -14,7 +15,9 @@ router.get(
       return res.status(BAD_REQUEST).end();
     }
     const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
-    res.status(OK).end();
+    const response = await issueService.searchIssue(query, config);
+    const historySearchIssues = response.sections[0].issues;
+    return res.status(OK).json(historySearchIssues);
   }
 );
 
