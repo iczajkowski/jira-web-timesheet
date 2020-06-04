@@ -4,18 +4,20 @@ import { debounce } from "lodash";
 import { issues } from "../../../api/issues";
 import { IssueSearchResponse } from "../../../models/Issue";
 
-interface IssueSearchProps {}
+interface IssueSearchProps {
+  onChange?: (issue: IssueSearchResponse | undefined) => void;
+}
 
 interface IssueSearchState {
   data: IssueSearchResponse[];
-  value: IssueSearchResponse | null;
+  value: string;
   fetching: boolean;
 }
 
 class IssueSearch extends React.Component<IssueSearchProps, IssueSearchState> {
-  state = {
+  state: IssueSearchState = {
     data: [],
-    value: null,
+    value: "",
     fetching: false
   };
   fetchId = 0;
@@ -41,12 +43,20 @@ class IssueSearch extends React.Component<IssueSearchProps, IssueSearchState> {
     });
   };
 
-  handleChange = (value: IssueSearchResponse) => {
+  handleChange = (issueId: string) => {
+    const issue: IssueSearchResponse | undefined = this.state.data.find(
+      (issue: IssueSearchResponse) => issue.id == Number(issueId)
+    );
+    let value = "";
+    if (issue) {
+      value = `${issue.key} - ${issue.summaryText}`;
+    }
     this.setState({
       value,
       data: [],
       fetching: false
     });
+    this.props.onChange && this.props.onChange(issue);
   };
 
   render() {
@@ -55,7 +65,7 @@ class IssueSearch extends React.Component<IssueSearchProps, IssueSearchState> {
         <Select
           showSearch
           style={{ width: "100%" }}
-          placeholder="Select user"
+          placeholder="Select issue"
           value={this.state.value as any}
           onSearch={this.fetchIssues}
           onChange={this.handleChange}

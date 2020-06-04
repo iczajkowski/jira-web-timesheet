@@ -1,4 +1,4 @@
-import { Col, Layout, message, Modal, Row } from "antd";
+import { Col, message, Row } from "antd";
 import { isNil } from "lodash";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -14,10 +14,9 @@ import WorklogCalendar from "./WorklogCalendar/WorklogCalendar";
 import "./Home.css";
 import DetailsSider from "./DetailsSider/DetailsSider";
 import { groupWorklogsByDates } from "./utils/groupWorklogsByDates";
-import { Worklog } from "../../models/Worklog";
 import { sumTotalLoggedTime } from "./utils/sumTotalLoggedTime";
 import { getWorklogForDate } from "./utils/getWorklogForDate";
-import AddWorklogForm from "./AddWorklogForm/AddWorklogForm";
+import AddWorklogFormModal from "./AddWorklogFormModal/AddWorklogFormModal";
 
 const getInitialDate = ({
   month,
@@ -182,9 +181,12 @@ const Home: React.FC = () => {
               />
             </Col>
           </Row>
-          <Modal title="Log Time" visible={modalVisible} onCancel={onHideModal}>
-            <AddWorklogForm />
-          </Modal>
+          <AddWorklogFormModal
+            selectedDate={selectedDate}
+            modalVisible={modalVisible}
+            onHideModal={onHideModal}
+            onAdded={onHideModal}
+          />
         </>
       ) : (
         ""

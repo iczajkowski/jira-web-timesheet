@@ -2,8 +2,13 @@ import { ClientConfig } from "../jira-client/models/client-config";
 import { jiraClientFactory } from "src/jira-client/jira-client-factory";
 
 const searchIssue = (query: string, config: ClientConfig) => {
-  const issue = jiraClientFactory(config).issue as any;
-  return issue.getIssuePicker({ query });
+  const jiraClient = jiraClientFactory(config);
+  return jiraClient.myself.getMyself().then((myself: { accountId: string }) => {
+    const { accountId } = myself;
+    const issue = jiraClient.issue as any;
+    const currentJQL = `assignee was ${accountId}`;
+    return issue.getIssuePicker({ query, currentJQL });
+  });
 };
 
 export default {

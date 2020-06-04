@@ -22,3 +22,7 @@ export const getWorklogs = ({ from, to, user }: GetWorklogsParams) => {
     `/api/worklogs?from=${formattedDate.from}&to=${formattedDate.to}&accountId=${user.accountId}`
   );
 };
+
+export const postWorklog = (worklog: any) => {
+  return axios.post("api/worklogs", worklog);
+};

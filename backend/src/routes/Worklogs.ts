@@ -35,4 +35,13 @@ router.get(
   }
 );
 
+router.post(
+  "",
+  authentication.checkToken,
+  async (req: Request<any>, res: Response) => {
+    console.log("logging worklog", req.body);
+    return res.status(OK).end();
+  }
+);
+
 export default router;

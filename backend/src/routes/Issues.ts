@@ -16,7 +16,12 @@ router.get(
     }
     const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
     const response = await issueService.searchIssue(query, config);
-    const historySearchIssues = response.sections[0].issues;
+    const historySearchIssues = [
+      ...response.sections[0].issues,
+      ...response.sections[1].issues
+    ].filter((value, index, array) => {
+      return array.indexOf(value) === index;
+    });
     return res.status(OK).json(historySearchIssues);
   }
 );
