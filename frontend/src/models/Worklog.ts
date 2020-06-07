@@ -13,3 +13,9 @@ export interface WorklogEntry {
   id: string;
   issueId: string;
 }
+
+export interface WorklogEntryRequest {
+  issueId: number;
+  timeSpent: number;
+  started: string;
+}

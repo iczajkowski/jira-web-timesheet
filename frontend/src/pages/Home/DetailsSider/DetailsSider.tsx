@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, List } from "antd";
+import { Button, Card, List } from "antd";
 import "./DetailsSider.css";
 import moment from "moment";
 import { WorklogModel } from "../utils/groupWorklogsByDates";
@@ -12,12 +12,16 @@ interface DetailsSiderProps {
   jiraUrl: string;
   selectedDate: moment.Moment;
   worklogs: WorklogModel[];
+  addWorklogVisible: boolean;
+  onAddWorklogClick: () => void;
 }
 
 const DetailsSider: React.FC<DetailsSiderProps> = ({
   jiraUrl,
   selectedDate,
-  worklogs
+  worklogs,
+  addWorklogVisible,
+  onAddWorklogClick
 }) => {
   const totalLoggedTime = sumTotalLoggedTime(worklogs);
 
@@ -27,7 +31,22 @@ const DetailsSider: React.FC<DetailsSiderProps> = ({
       title={DetailsTitle({ date: selectedDate, totalLoggedTime })}
     >
       <List
-        header={<b>Logged Issues:</b>}
+        header={
+          <div className="list__header">
+            <b>Logged Issues:</b>
+            {addWorklogVisible ? (
+              <Button
+                onClick={onAddWorklogClick}
+                type="primary"
+                icon="plus-circle"
+              >
+                Add
+              </Button>
+            ) : (
+              <></>
+            )}
+          </div>
+        }
         dataSource={worklogs}
         renderItem={value => (
           <List.Item>
