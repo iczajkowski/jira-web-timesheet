@@ -1,11 +1,13 @@
-import React from "react";
-import { DatePicker, Form, InputNumber } from "antd";
+import React, { useEffect } from "react";
+import { DatePicker, Form, InputNumber, Typography } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import IssueSearch from "../IssueSearch/IssueSearch";
 import * as moment from "moment";
 
 export interface AddWorklogFormProps {
+  validationPassed: boolean;
   initialDate: moment.Moment;
+  onChange: () => void;
 }
 
 const formItemLayout = {
@@ -21,12 +23,18 @@ const formItemLayout = {
 
 const AddWorklogForm: React.FC<FormComponentProps & AddWorklogFormProps> = ({
   form,
-  initialDate
+  initialDate,
+  validationPassed,
+  onChange
 }) => {
   const { getFieldDecorator } = form;
 
+  useEffect(() => {
+    form.resetFields();
+  }, [initialDate]);
+
   return (
-    <Form>
+    <Form onChange={onChange}>
       <Form.Item label="Issue" {...formItemLayout}>
         {getFieldDecorator("issue", {
           rules: [{ required: true, message: "Please select issue" }]
@@ -50,6 +58,13 @@ const AddWorklogForm: React.FC<FormComponentProps & AddWorklogFormProps> = ({
           initialValue: 0
         })(<InputNumber min={0} max={59} />)}
       </Form.Item>
+      {validationPassed ? (
+        ""
+      ) : (
+        <Typography.Text type="danger">
+          Minutes or hours need to be provided
+        </Typography.Text>
+      )}
     </Form>
   );
 };

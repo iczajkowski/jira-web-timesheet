@@ -12,6 +12,7 @@ interface DetailsSiderProps {
   jiraUrl: string;
   selectedDate: moment.Moment;
   worklogs: WorklogModel[];
+  addWorklogVisible: boolean;
   onAddWorklogClick: () => void;
 }
 
@@ -19,6 +20,7 @@ const DetailsSider: React.FC<DetailsSiderProps> = ({
   jiraUrl,
   selectedDate,
   worklogs,
+  addWorklogVisible,
   onAddWorklogClick
 }) => {
   const totalLoggedTime = sumTotalLoggedTime(worklogs);
@@ -32,13 +34,17 @@ const DetailsSider: React.FC<DetailsSiderProps> = ({
         header={
           <div className="list__header">
             <b>Logged Issues:</b>
-            <Button
-              onClick={onAddWorklogClick}
-              type="primary"
-              icon="plus-circle"
-            >
-              Add
-            </Button>
+            {addWorklogVisible ? (
+              <Button
+                onClick={onAddWorklogClick}
+                type="primary"
+                icon="plus-circle"
+              >
+                Add
+              </Button>
+            ) : (
+              <></>
+            )}
           </div>
         }
         dataSource={worklogs}

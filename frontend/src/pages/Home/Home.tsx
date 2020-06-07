@@ -155,6 +155,10 @@ const Home: React.FC = () => {
     selectedDate
   );
 
+  const addWorklogVisible = () => {
+    return (user && user.accountId) === appUser.accountId;
+  };
+
   return (
     <div className="home__container">
       {initialized() ? (
@@ -177,6 +181,7 @@ const Home: React.FC = () => {
                 jiraUrl={url}
                 selectedDate={selectedDate}
                 worklogs={worklogForSelectedDate}
+                addWorklogVisible={addWorklogVisible()}
                 onAddWorklogClick={onShowModal}
               />
             </Col>

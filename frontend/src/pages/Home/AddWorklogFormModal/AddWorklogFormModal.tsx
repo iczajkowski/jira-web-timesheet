@@ -47,10 +47,19 @@ const AddWorklogFormModal: React.FC<FormComponentProps &
   form
 }) => {
   const [pending, setPending] = useState(false);
+  const [validationPassed, setValidationPassed] = useState(true);
+
+  const validateTimeSpent = () => {
+    const minutes = form.getFieldValue("minutes");
+    const hours = form.getFieldDecorator("hours");
+    const valid = minutes && hours;
+    setValidationPassed(!!valid);
+  };
 
   const handleOk = () => {
+    validateTimeSpent();
     form.validateFields(err => {
-      if (!err) {
+      if (!err && validationPassed) {
         setPending(true);
         const request = formToWorklogRequest(
           form.getFieldsValue() as WorklogForm
@@ -63,6 +72,10 @@ const AddWorklogFormModal: React.FC<FormComponentProps &
     });
   };
 
+  const handleFormChange = () => {
+    validateTimeSpent();
+  };
+
   return (
     <Modal
       title="Log Time"
@@ -71,7 +84,12 @@ const AddWorklogFormModal: React.FC<FormComponentProps &
       onCancel={onHideModal}
       onOk={handleOk}
     >
-      <AddWorklogForm form={form} initialDate={selectedDate} />
+      <AddWorklogForm
+        form={form}
+        initialDate={selectedDate}
+        validationPassed={validationPassed}
+        onChange={handleFormChange}
+      />
     </Modal>
   );
 };
