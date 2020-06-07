@@ -4,6 +4,32 @@ import React, { useState } from "react";
 import * as moment from "moment";
 import { FormComponentProps } from "antd/lib/form";
 import { postWorklog } from "../../../api/worklogs";
+import { IssueSearchResponse } from "../../../models/Issue";
+import { WorklogEntryRequest } from "../../../models/Worklog";
+import { issues } from "../../../api/issues";
+
+interface WorklogForm {
+  issue: IssueSearchResponse;
+  started: moment.Moment;
+  hours: number;
+  minutes: number;
+}
+
+const formToWorklogRequest = ({
+  issue,
+  started,
+  hours,
+  minutes
+}: WorklogForm): WorklogEntryRequest => {
+  const issueId = issue.id;
+  const startedString = started.format();
+  const timeSpentSeconds = hours * 3600 + minutes * 60;
+  return {
+    issueId,
+    started: startedString,
+    timeSpent: timeSpentSeconds
+  };
+};
 
 export interface AddWorklogFormModalProps {
   selectedDate: moment.Moment;
@@ -26,9 +52,10 @@ const AddWorklogFormModal: React.FC<FormComponentProps &
     form.validateFields(err => {
       if (!err) {
         setPending(true);
-        postWorklog({
-          issue: form.getFieldValue("issue").id
-        }).then(() => {
+        const request = formToWorklogRequest(
+          form.getFieldsValue() as WorklogForm
+        );
+        postWorklog(request).then(() => {
           setPending(false);
           onAdded();
         });
