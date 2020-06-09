@@ -1,5 +1,5 @@
 import { ClientConfig } from "../jira-client/models/client-config";
-import { jiraClientFactory } from "src/jira-client/jira-client-factory";
+import { jiraClientFactory } from "../jira-client/jira-client-factory";
 
 const searchIssue = (query: string, config: ClientConfig) => {
   const jiraClient = jiraClientFactory(config);
