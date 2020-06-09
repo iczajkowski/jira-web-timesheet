@@ -6,7 +6,6 @@ import { FormComponentProps } from "antd/lib/form";
 import { postWorklog } from "../../../api/worklogs";
 import { IssueSearchResponse } from "../../../models/Issue";
 import { WorklogEntryRequest } from "../../../models/Worklog";
-import { issues } from "../../../api/issues";
 
 interface WorklogForm {
   issue: IssueSearchResponse;
@@ -52,7 +51,7 @@ const AddWorklogFormModal: React.FC<FormComponentProps &
   const validateTimeSpent = () => {
     const minutes = form.getFieldValue("minutes");
     const hours = form.getFieldDecorator("hours");
-    const valid = minutes && hours;
+    const valid = minutes || hours;
     setValidationPassed(!!valid);
   };
 

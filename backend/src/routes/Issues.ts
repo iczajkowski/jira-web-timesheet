@@ -20,7 +20,7 @@ router.get(
       ...response.sections[0].issues,
       ...response.sections[1].issues
     ].filter((value, index, array) => {
-      return array.indexOf(value) === index;
+      return array.findIndex(v => value.id === v.id) === index;
     });
     return res.status(OK).json(historySearchIssues);
   }

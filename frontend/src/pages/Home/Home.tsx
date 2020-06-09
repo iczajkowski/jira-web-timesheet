@@ -134,19 +134,24 @@ const Home: React.FC = () => {
     }
   };
 
-  const onRefresh = () => {
+  const handleRefresh = () => {
     if (user) {
       const { from, to } = getDateSpan(selectedDate);
       fetchWorklogs(from, to, user);
     }
   };
 
-  const onShowModal = () => {
+  const handleShowModal = () => {
     setModalVisible(true);
   };
 
-  const onHideModal = () => {
+  const handleHideModal = () => {
     setModalVisible(false);
+  };
+
+  const handleAdded = () => {
+    handleRefresh();
+    handleHideModal();
   };
 
   const initialized = () => !isNil(user) && !isNil(month) && !isNil(year);
@@ -171,7 +176,7 @@ const Home: React.FC = () => {
                 isFetchingWorklogs={isFetchingWorklogs}
                 selectedDate={selectedDate}
                 onViewChanged={onViewChanged}
-                onRefresh={onRefresh}
+                onRefresh={handleRefresh}
                 worklogs={worklogsByDate}
                 totalLoggedTime={totalLoggedTime}
               />
@@ -182,15 +187,15 @@ const Home: React.FC = () => {
                 selectedDate={selectedDate}
                 worklogs={worklogForSelectedDate}
                 addWorklogVisible={addWorklogVisible()}
-                onAddWorklogClick={onShowModal}
+                onAddWorklogClick={handleShowModal}
               />
             </Col>
           </Row>
           <AddWorklogFormModal
             selectedDate={selectedDate}
             modalVisible={modalVisible}
-            onHideModal={onHideModal}
-            onAdded={onHideModal}
+            onHideModal={handleHideModal}
+            onAdded={handleAdded}
           />
         </>
       ) : (
