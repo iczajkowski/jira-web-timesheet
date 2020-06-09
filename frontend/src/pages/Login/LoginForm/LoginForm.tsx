@@ -3,7 +3,7 @@ import "./LoginForm.css";
 import { Button, Checkbox, Form, Input, Typography } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { WrappedFormUtils } from "antd/lib/form/Form";
-import { AuthenticateRequest } from "../../api/users";
+import { AuthenticateRequest } from "../../../api/users";
 
 const { Text } = Typography;
 
@@ -41,7 +41,7 @@ const LoginForm: React.FunctionComponent<Props & FormComponentProps> = ({
       <Form.Item>
         {getFieldDecorator("url", {
           rules: [{ required: true, message: "Please input URL" }]
-        })(<Input placeholder="URL" />)}
+        })(<Input addonBefore="https://" placeholder="URL" />)}
       </Form.Item>
       <Form.Item>
         {getFieldDecorator("apiToken", {

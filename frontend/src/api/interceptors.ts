@@ -7,6 +7,7 @@ const interceptors = ({ dispatch }: EnhancedStore) => {
     if (error.response.status === 401) {
       dispatch(clearUserAction());
     }
+    return Promise.reject(error);
   });
 };
 

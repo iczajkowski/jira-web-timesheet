@@ -1,0 +1,14 @@
+.details-sider {
+  height: 100%;
+}
+
+.list__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.issue__description {
+  display: flex;
+  justify-content: space-between;
+}

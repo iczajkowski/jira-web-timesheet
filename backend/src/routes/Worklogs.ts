@@ -1,8 +1,9 @@
-import { Request, Response, Router } from "express";
+import { Request, Response, Router, request } from "express";
 import { authentication } from "../shared/Authentication";
 import { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK } from "http-status-codes";
 import worklogService from "../services/WorklogService";
 import moment from "moment";
+import { WorklogEntryRequest } from "../models/worklog-request";
 
 const router = Router();
 
@@ -30,6 +31,23 @@ router.get(
       });
       return res.status(OK).json(worklogs);
     } catch (e) {
+      console.error(e);
+      return res.status(INTERNAL_SERVER_ERROR);
+    }
+  }
+);
+
+router.post(
+  "",
+  authentication.checkToken,
+  async (req: Request<any>, res: Response) => {
+    try {
+      const request = req.body as WorklogEntryRequest;
+      const config = req.params[authentication.DECODED_CONFIG];
+      const response = await worklogService.addWorklog({ config, request });
+      return res.status(OK).json(response);
+    } catch (error) {
+      console.error(error);
       return res.status(INTERNAL_SERVER_ERROR);
     }
   }

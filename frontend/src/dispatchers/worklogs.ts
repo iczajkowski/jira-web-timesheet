@@ -3,7 +3,7 @@ import {
   errorLoadingWorklogsAction,
   loadedWorklogsAction,
   loadWorklogsAction
-} from "../components/Home/worklogActions";
+} from "../pages/Home/worklogActions";
 import { getWorklogs, GetWorklogsParams } from "../api/worklogs";
 
 export const getWorklogsDispatch = (params: GetWorklogsParams) => {

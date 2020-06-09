@@ -1,5 +1,5 @@
 import React from "react";
-import LoginForm from "../LoginForm/LoginForm";
+import LoginForm from "./LoginForm/LoginForm";
 import { useDispatch, useSelector } from "react-redux";
 import { authenticateDispatch } from "../../dispatchers/authenticate";
 import { RootState } from "../../reducer";

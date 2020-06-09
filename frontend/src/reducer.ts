@@ -1,7 +1,7 @@
 import { appReducer, AppState } from "./appReducer";
 import { combineReducers } from "redux";
-import { loginReducer, LoginState } from "./components/Login/loginReducer";
-import { worklogReducer, WorklogState } from "./components/Home/worklogReducer";
+import { loginReducer, LoginState } from "./pages/Login/loginReducer";
+import { worklogReducer, WorklogState } from "./pages/Home/worklogReducer";
 
 export interface RootState {
   appState: AppState;
