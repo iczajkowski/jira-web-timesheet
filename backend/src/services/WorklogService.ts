@@ -2,7 +2,7 @@ import { ClientConfig } from "../jira-client/models/client-config";
 import { jiraClientFactory } from "../jira-client/jira-client-factory";
 import { getWorklogs as getWorklogsApi } from "../jira-client/get-worklogs";
 import { WorklogEntryRequest } from "../models/worklog-request";
-import { toJiraDateTimeFormat } from "src/jira-client/date";
+import { toJiraDateTimeFormat } from "../jira-client/date";
 import moment from "moment";
 
 const getWorklogs = async ({
