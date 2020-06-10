@@ -160,7 +160,7 @@ const Home: React.FC = () => {
     selectedDate
   );
 
-  const addWorklogVisible = () => {
+  const canEdit = () => {
     return (user && user.accountId) === appUser.accountId;
   };
 
@@ -186,7 +186,7 @@ const Home: React.FC = () => {
                 jiraUrl={url}
                 selectedDate={selectedDate}
                 worklogs={worklogForSelectedDate}
-                addWorklogVisible={addWorklogVisible()}
+                canEdit={canEdit()}
                 onAddWorklogClick={handleShowModal}
               />
             </Col>

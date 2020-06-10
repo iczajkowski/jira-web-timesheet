@@ -1,9 +1,15 @@
 import { Request, Response, Router, request } from "express";
 import { authentication } from "../shared/Authentication";
-import { BAD_REQUEST, INTERNAL_SERVER_ERROR, OK } from "http-status-codes";
+import {
+  BAD_REQUEST,
+  FORBIDDEN,
+  INTERNAL_SERVER_ERROR,
+  OK
+} from "http-status-codes";
 import worklogService from "../services/WorklogService";
 import moment from "moment";
 import { WorklogEntryRequest } from "../models/worklog-request";
+import { ForbiddenError } from "../errors/ForbiddenError";
 
 const router = Router();
 
@@ -49,6 +55,30 @@ router.post(
     } catch (error) {
       console.error(error);
       return res.status(INTERNAL_SERVER_ERROR);
+    }
+  }
+);
+
+router.delete(
+  "/:issueId/:worklogId",
+  authentication.checkToken,
+  async (req: Request<any>, res: Response) => {
+    const { issueId, worklogId } = req.params;
+    try {
+      const config = req.params[authentication.DECODED_CONFIG];
+      const response = await worklogService.deleteWorklog({
+        config,
+        worklogId,
+        issueId
+      });
+      return res.status(OK).json(response);
+    } catch (error) {
+      console.error(error);
+      if (error instanceof ForbiddenError) {
+        return res.status(FORBIDDEN);
+      } else {
+        return res.status(INTERNAL_SERVER_ERROR);
+      }
     }
   }
 );

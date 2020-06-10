@@ -26,3 +26,13 @@ export const getWorklogs = ({ from, to, user }: GetWorklogsParams) => {
 export const postWorklog = (worklog: any) => {
   return axios.post("api/worklogs", worklog);
 };
+
+export const deleteWorklog = ({
+  worklogId,
+  issueId
+}: {
+  worklogId: string;
+  issueId: string;
+}) => {
+  return axios.delete(`/api/worklogs/${issueId}/${worklogId}`);
+};
