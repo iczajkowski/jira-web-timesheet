@@ -188,6 +188,7 @@ const Home: React.FC = () => {
                 worklogs={worklogForSelectedDate}
                 canEdit={canEdit()}
                 onAddWorklogClick={handleShowModal}
+                onWorklogDeleted={handleRefresh}
               />
             </Col>
           </Row>

@@ -53,14 +53,12 @@ const deleteWorklog = async ({
 }) => {
   const jiraClient = jiraClientFactory(config);
   const myself = await jiraClient.myself.getMyself();
-  console.log({ myself });
-  const worklog = await jiraClient.issue.getWorklog({ issueId, id: worklogId });
-  console.log({ worklog });
+  const worklog = await jiraClient.issue.getWorkLog({ issueId, id: worklogId });
   const authorID = worklog.author.accountId;
   if (myself.accountId !== authorID) {
     throw new ForbiddenError();
   } else {
-    return jiraClient.issue.deleteWorklog({ id: worklogId, issueId });
+    return jiraClient.issue.deleteWorkLog({ id: worklogId, issueId });
   }
 };
 

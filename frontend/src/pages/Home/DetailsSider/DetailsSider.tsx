@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, Modal, List } from "antd";
+import { Button, Card, Modal, List, message } from "antd";
 import "./DetailsSider.css";
 import moment from "moment";
 import { WorklogModel } from "../utils/groupWorklogsByDates";
@@ -15,6 +15,7 @@ interface DetailsSiderProps {
   worklogs: WorklogModel[];
   canEdit: boolean;
   onAddWorklogClick: () => void;
+  onWorklogDeleted: () => void;
 }
 
 const DetailsSider: React.FC<DetailsSiderProps> = ({
@@ -22,7 +23,8 @@ const DetailsSider: React.FC<DetailsSiderProps> = ({
   selectedDate,
   worklogs,
   canEdit,
-  onAddWorklogClick
+  onAddWorklogClick,
+  onWorklogDeleted
 }) => {
   const totalLoggedTime = sumTotalLoggedTime(worklogs);
 
@@ -38,7 +40,9 @@ const DetailsSider: React.FC<DetailsSiderProps> = ({
         return deleteWorklog({
           worklogId: worklog.id,
           issueId: worklog.issueId
-        });
+        })
+          .then(onWorklogDeleted)
+          .catch(() => message.error("Could not delete worklog"));
       },
       onCancel: () => {}
     });
