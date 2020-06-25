@@ -2,7 +2,9 @@ import { Worklog } from "../../../models/Worklog";
 import { getDateInTimezone } from "../../../utils/date";
 
 export interface WorklogModel {
+  id: string;
   issueKey: string;
+  issueId: string;
   timeSpent: number;
   started: string;
 }
@@ -40,6 +42,8 @@ export const groupWorklogsByDates = (
         const newEntries = [
           ...entries,
           {
+            id: worklogEntry.id,
+            issueId: worklogEntry.issueId,
             issueKey: worklog.issueKey,
             timeSpent: worklogEntry.timeSpentSeconds,
             started: worklogEntry.started

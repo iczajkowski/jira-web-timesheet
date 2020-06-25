@@ -4,6 +4,7 @@ import { getWorklogs as getWorklogsApi } from "../jira-client/get-worklogs";
 import { WorklogEntryRequest } from "../models/worklog-request";
 import { toJiraDateTimeFormat } from "../jira-client/date";
 import moment from "moment";
+import { ForbiddenError } from "../errors/ForbiddenError";
 
 const getWorklogs = async ({
   config,
@@ -25,7 +26,7 @@ const getWorklogs = async ({
   });
 };
 
-const addWorklog = async ({
+const addWorklog = ({
   config,
   request
 }: {
@@ -41,7 +42,28 @@ const addWorklog = async ({
   });
 };
 
+const deleteWorklog = async ({
+  config,
+  issueId,
+  worklogId
+}: {
+  config: ClientConfig;
+  issueId: string;
+  worklogId: string;
+}) => {
+  const jiraClient = jiraClientFactory(config);
+  const myself = await jiraClient.myself.getMyself();
+  const worklog = await jiraClient.issue.getWorkLog({ issueId, id: worklogId });
+  const authorID = worklog.author.accountId;
+  if (myself.accountId !== authorID) {
+    throw new ForbiddenError();
+  } else {
+    return jiraClient.issue.deleteWorkLog({ id: worklogId, issueId });
+  }
+};
+
 export default {
   getWorklogs,
-  addWorklog
+  addWorklog,
+  deleteWorklog
 };
