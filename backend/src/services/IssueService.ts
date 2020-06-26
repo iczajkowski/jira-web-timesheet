@@ -7,7 +7,7 @@ const searchIssue = (query: string, config: ClientConfig) => {
     const { accountId } = myself;
     const issue = jiraClient.issue as any;
     const currentJQL = `assignee was ${accountId}`;
-    return issue.getIssuePicker({ query, currentJQL });
+    return issue.getIssuePicker({ query, currentJQL, showSubTasks: true });
   });
 };
 
