@@ -1,11 +1,7 @@
 import moment, { Moment } from "moment";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Button, Calendar, Icon, Spin, Statistic } from "antd";
-import { Worklog } from "../../../models/Worklog";
-import {
-  groupWorklogsByDates,
-  WorklogGroups
-} from "../utils/groupWorklogsByDates";
+import { WorklogGroups } from "../utils/groupWorklogsByDates";
 import DateCellFactory from "./DateCell";
 import { formatDuration } from "../../../utils/duration";
 import "./WorklogCalendar.css";
@@ -65,16 +61,8 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   };
 
   const keydown = ({ key }: { key: string }) => {
-    switch (key) {
-      case "ArrowLeft":
-        backward();
-        break;
-      case "ArrowRight":
-        forward();
-        break;
-      case "r":
-        onRefresh();
-        break;
+    if (key === "r") {
+      onRefresh();
     }
   };
 
