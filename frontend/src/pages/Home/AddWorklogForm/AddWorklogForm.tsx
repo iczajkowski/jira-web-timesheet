@@ -29,10 +29,6 @@ const AddWorklogForm: React.FC<FormComponentProps & AddWorklogFormProps> = ({
 }) => {
   const { getFieldDecorator } = form;
 
-  useEffect(() => {
-    form.resetFields();
-  }, [initialDate]);
-
   return (
     <Form onChange={onChange}>
       <Form.Item label="Issue" {...formItemLayout}>
