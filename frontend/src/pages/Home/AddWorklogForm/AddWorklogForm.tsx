@@ -29,6 +29,10 @@ const AddWorklogForm: React.FC<FormComponentProps & AddWorklogFormProps> = ({
 }) => {
   const { getFieldDecorator } = form;
 
+  useEffect(() => {
+    form.resetFields(["started"]);
+  }, [initialDate]);
+
   return (
     <Form onChange={onChange}>
       <Form.Item label="Issue" {...formItemLayout}>
@@ -40,6 +44,10 @@ const AddWorklogForm: React.FC<FormComponentProps & AddWorklogFormProps> = ({
         {getFieldDecorator("started", {
           rules: [{ required: true, message: "Please select date" }],
           initialValue: initialDate
+            .clone()
+            .hour(8)
+            .minute(0)
+            .second(0)
         })(<DatePicker showTime={true} />)}
       </Form.Item>
       <Form.Item label="Hours" labelCol={{ sm: 4 }} wrapperCol={{ sm: 4 }}>

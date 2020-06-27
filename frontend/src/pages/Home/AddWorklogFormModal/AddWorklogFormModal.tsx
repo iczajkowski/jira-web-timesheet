@@ -75,12 +75,6 @@ const AddWorklogFormModal: React.FC<FormComponentProps &
     validateTimeSpent();
   };
 
-  const initialDate = selectedDate
-    .clone()
-    .hour(8)
-    .minute(0)
-    .second(0);
-
   return (
     <Modal
       title="Log Time"
@@ -91,7 +85,7 @@ const AddWorklogFormModal: React.FC<FormComponentProps &
     >
       <AddWorklogForm
         form={form}
-        initialDate={initialDate}
+        initialDate={selectedDate}
         validationPassed={validationPassed}
         onChange={handleFormChange}
       />
