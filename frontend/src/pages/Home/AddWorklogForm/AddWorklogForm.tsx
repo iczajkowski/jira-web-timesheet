@@ -45,7 +45,7 @@ const AddWorklogForm: React.FC<FormComponentProps & AddWorklogFormProps> = ({
           rules: [{ required: true, message: "Please select date" }],
           initialValue: initialDate
             .clone()
-            .hour(8)
+            .hour(12)
             .minute(0)
             .second(0)
         })(<DatePicker showTime={true} />)}
