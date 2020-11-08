@@ -1,8 +1,8 @@
 import { ClientConfig } from "../jira-client/models/client-config";
-import { jiraClientFactory } from "../jira-client/jira-client-factory";
+import { createJiraClient } from "../jira-client/createJiraClient";
 
 const issueService = (config: ClientConfig) => {
-  const jiraClient = jiraClientFactory(config);
+  const jiraClient = createJiraClient(config);
 
   return {
     searchIssue: (query: string) => {

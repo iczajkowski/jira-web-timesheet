@@ -1,26 +1,21 @@
 import { ClientConfig } from "../jira-client/models/client-config";
-import { jiraClientFactory } from "../jira-client/jira-client-factory";
-import { getWorklogs as getWorklogsApi } from "../jira-client/get-worklogs";
+import { createJiraClient } from "../jira-client/createJiraClient";
+import { getWorklogs } from "../jira-client/worklogs";
 import { WorklogEntryRequest } from "../models/worklog-request";
 import { toJiraDateTimeFormat } from "../jira-client/date";
 import moment from "moment";
 import { ForbiddenError } from "../errors/ForbiddenError";
 
 const worklogService = (config: ClientConfig) => {
-  const jiraClient = jiraClientFactory(config);
+  const jiraClient = createJiraClient(config);
 
   return {
     getWorklogs: (from: Date, to: Date, accountId: string) => {
-      return getWorklogsApi({
-        from,
-        to,
-        jiraClient,
-        accountId
-      });
+      return getWorklogs(jiraClient)(from, to, accountId);
     },
 
     addWorklog: (request: WorklogEntryRequest) => {
-      const jiraClient = jiraClientFactory(config);
+      const jiraClient = createJiraClient(config);
       const started = moment(request.started).toDate();
       return jiraClient.issue.addWorkLog({
         timeSpentSeconds: request.timeSpent,
@@ -30,7 +25,7 @@ const worklogService = (config: ClientConfig) => {
     },
 
     deleteWorklog: async (issueId: string, worklogId: string) => {
-      const jiraClient = jiraClientFactory(config);
+      const jiraClient = createJiraClient(config);
       const myself = await jiraClient.myself.getMyself();
       const worklog = await jiraClient.issue.getWorkLog({
         issueId,

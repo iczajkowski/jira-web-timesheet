@@ -2,8 +2,7 @@ import * as JiraClient from "jira-connector";
 import { IssuesResponse } from "./models/issues-response";
 import { toJiraDateFormat } from "./date";
 
-export const searchIssues = (
-  client: JiraClient,
+export const searchIssues = (client: JiraClient) => (
   from: Date,
   to: Date,
   author: string

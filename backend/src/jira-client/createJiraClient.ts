@@ -1,7 +1,7 @@
 import { ClientConfig } from "./models/client-config";
 import JiraClient from "jira-connector";
 
-export const jiraClientFactory = (config: ClientConfig) => {
+export const createJiraClient = (config: ClientConfig): JiraClient => {
   return new JiraClient({
     host: config.url,
     basic_auth: {
