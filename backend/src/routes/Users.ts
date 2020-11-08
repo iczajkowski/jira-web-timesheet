@@ -1,11 +1,11 @@
 import { Request, Response, Router } from "express";
+import { body, validationResult } from "express-validator";
 import { BAD_REQUEST, OK, UNAUTHORIZED } from "http-status-codes";
-import { cofigValidator } from "../jira-client/configuration-validator";
-import userService from "./../services/UserService";
-import { ClientConfig } from "../jira-client/models/client-config";
 import { mapJiraError } from "../jira-client/jira-error-mapper";
-import { authentication } from "../shared/Authentication";
+import { ClientConfig } from "../jira-client/models/client-config";
 import { AuthenticateRequest } from "../models/authenticate-request";
+import { authentication } from "../shared/Authentication";
+import userService from "./../services/UserService";
 
 // Init shared
 const router = Router();
@@ -28,28 +28,34 @@ router.post(
   }
 );
 
-router.post("/authenticate", async (req: Request, res: Response) => {
-  const config = req.body as AuthenticateRequest;
-  if (!cofigValidator(config)) {
-    return res.status(BAD_REQUEST).end();
-  }
-  try {
-    const user = await userService.getCurrentUser(config);
-    if (!user) {
-      return res.status(UNAUTHORIZED);
+router.post(
+  "/authenticate",
+  [body("url").isURL(), body("email").isEmail(), body("apiToken").notEmpty()],
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(BAD_REQUEST).json({ errors: errors.array() });
     }
-    return authentication
-      .setToken(res, config)
-      .status(OK)
-      .end();
-  } catch (error) {
-    const jiraError = mapJiraError(error);
-    const response = res.status(jiraError.httpStatusCode);
-    return jiraError.message
-      ? response.json({ message: jiraError.message })
-      : response.end();
+
+    const config = req.body as AuthenticateRequest;
+    try {
+      const user = await userService.getCurrentUser(config);
+      if (!user) {
+        return res.status(UNAUTHORIZED);
+      }
+      return authentication
+        .setToken(res, config)
+        .status(OK)
+        .end();
+    } catch (error) {
+      const jiraError = mapJiraError(error);
+      const response = res.status(jiraError.httpStatusCode);
+      return jiraError.message
+        ? response.json({ message: jiraError.message })
+        : response.end();
+    }
   }
-});
+);
 
 router.get(
   "/search",

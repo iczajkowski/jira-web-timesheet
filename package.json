@@ -33,5 +33,9 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
+  },
+  "dependencies": {
+    "@types/express-validator": "^3.0.0",
+    "express-validator": "^6.6.1"
   }
 }
