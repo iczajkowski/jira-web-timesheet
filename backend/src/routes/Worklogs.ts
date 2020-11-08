@@ -29,12 +29,11 @@ router.get(
     }
     const config = req.params[authentication.DECODED_CONFIG];
     try {
-      const worklogs = await worklogService.getWorklogs({
-        config,
-        from: from.toDate(),
-        to: to.toDate(),
+      const worklogs = await worklogService(config).getWorklogs(
+        from.toDate(),
+        to.toDate(),
         accountId
-      });
+      );
       return res.status(OK).json(worklogs);
     } catch (e) {
       console.error(e);
@@ -50,7 +49,7 @@ router.post(
     try {
       const request = req.body as WorklogEntryRequest;
       const config = req.params[authentication.DECODED_CONFIG];
-      const response = await worklogService.addWorklog({ config, request });
+      const response = await worklogService(config).addWorklog(request);
       return res.status(OK).json(response);
     } catch (error) {
       console.error(error);
@@ -66,11 +65,10 @@ router.delete(
     const { issueId, worklogId } = req.params;
     try {
       const config = req.params[authentication.DECODED_CONFIG];
-      const response = await worklogService.deleteWorklog({
-        config,
+      const response = await worklogService(config).deleteWorklog(
         worklogId,
         issueId
-      });
+      );
       return res.status(OK).json(response);
     } catch (error) {
       console.error(error);

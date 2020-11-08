@@ -15,7 +15,7 @@ router.get(
   authentication.checkToken,
   async (req: Request<any>, res: Response) => {
     const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
-    const user = await userService.getCurrentUser(config);
+    const user = await userService(config).getCurrentUser();
     return res.status(OK).json({ user, url: config.url });
   }
 );
@@ -39,7 +39,7 @@ router.post(
 
     const config = req.body as AuthenticateRequest;
     try {
-      const user = await userService.getCurrentUser(config);
+      const user = await userService(config).getCurrentUser();
       if (!user) {
         return res.status(UNAUTHORIZED);
       }
@@ -67,7 +67,7 @@ router.get(
     }
     const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
     try {
-      const result = await userService.searchUsers(query, config);
+      const result = await userService(config).searchUsers(query);
       return res
         .status(OK)
         .json(result)
@@ -92,7 +92,7 @@ router.get(
     }
     try {
       const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
-      const user = await userService.getUser(accountId, config);
+      const user = await userService(config).getUser(accountId);
       return res
         .status(OK)
         .json(user)

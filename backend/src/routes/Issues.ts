@@ -15,7 +15,7 @@ router.get(
       return res.status(BAD_REQUEST).end();
     }
     const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
-    const response = await issueService.searchIssue(query, config);
+    const response = await issueService(config).searchIssue(query);
     const historySearchIssues = [
       ...response.sections[0].issues,
       ...response.sections[1].issues
