@@ -11,7 +11,7 @@ const issueService = (config: ClientConfig) => {
         .then((myself: { accountId: string }) => {
           const { accountId } = myself;
           const issue = jiraClient.issue as any;
-          const currentJQL = `assignee was ${accountId}`;
+          const currentJQL = `assignee was ${accountId} or key = ${query}`;
           return issue.getIssuePicker({
             query,
             currentJQL,
