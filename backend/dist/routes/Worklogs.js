@@ -31,12 +31,7 @@ router.get("", Authentication_1.authentication.checkToken, (req, res) => __await
     }
     const config = req.params[Authentication_1.authentication.DECODED_CONFIG];
     try {
-        const worklogs = yield WorklogService_1.default.getWorklogs({
-            config,
-            from: from.toDate(),
-            to: to.toDate(),
-            accountId
-        });
+        const worklogs = yield WorklogService_1.default(config).getWorklogs(from.toDate(), to.toDate(), accountId);
         return res.status(http_status_codes_1.OK).json(worklogs);
     }
     catch (e) {
@@ -48,7 +43,7 @@ router.post("", Authentication_1.authentication.checkToken, (req, res) => __awai
     try {
         const request = req.body;
         const config = req.params[Authentication_1.authentication.DECODED_CONFIG];
-        const response = yield WorklogService_1.default.addWorklog({ config, request });
+        const response = yield WorklogService_1.default(config).addWorklog(request);
         return res.status(http_status_codes_1.OK).json(response);
     }
     catch (error) {
@@ -60,11 +55,7 @@ router.delete("/:issueId/:worklogId", Authentication_1.authentication.checkToken
     const { issueId, worklogId } = req.params;
     try {
         const config = req.params[Authentication_1.authentication.DECODED_CONFIG];
-        const response = yield WorklogService_1.default.deleteWorklog({
-            config,
-            worklogId,
-            issueId
-        });
+        const response = yield WorklogService_1.default(config).deleteWorklog(worklogId, issueId);
         return res.status(http_status_codes_1.OK).json(response);
     }
     catch (error) {

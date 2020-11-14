@@ -13,27 +13,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
+const express_validator_1 = require("express-validator");
 const http_status_codes_1 = require("http-status-codes");
-const configuration_validator_1 = require("../jira-client/configuration-validator");
-const UserService_1 = __importDefault(require("./../services/UserService"));
 const jira_error_mapper_1 = require("../jira-client/jira-error-mapper");
 const Authentication_1 = require("../shared/Authentication");
+const UserService_1 = __importDefault(require("./../services/UserService"));
 const router = express_1.Router();
 router.get("/current", Authentication_1.authentication.checkToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const config = req.params[Authentication_1.authentication.DECODED_CONFIG];
-    const user = yield UserService_1.default.getCurrentUser(config);
+    const user = yield UserService_1.default(config).getCurrentUser();
     return res.status(http_status_codes_1.OK).json({ user, url: config.url });
 }));
 router.post("/logout", Authentication_1.authentication.checkToken, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     return Authentication_1.authentication.clearToken(res).end();
 }));
-router.post("/authenticate", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const config = req.body;
-    if (!configuration_validator_1.cofigValidator(config)) {
-        return res.status(http_status_codes_1.BAD_REQUEST).end();
+router.post("/authenticate", [express_validator_1.body("url").isURL(), express_validator_1.body("email").isEmail(), express_validator_1.body("apiToken").notEmpty()], (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = express_validator_1.validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(http_status_codes_1.BAD_REQUEST).json({ errors: errors.array() });
     }
+    const config = req.body;
     try {
-        const user = yield UserService_1.default.getCurrentUser(config);
+        const user = yield UserService_1.default(config).getCurrentUser();
         if (!user) {
             return res.status(http_status_codes_1.UNAUTHORIZED);
         }
@@ -57,7 +58,7 @@ router.get("/search", Authentication_1.authentication.checkToken, (req, res) => 
     }
     const config = req.params[Authentication_1.authentication.DECODED_CONFIG];
     try {
-        const result = yield UserService_1.default.searchUsers(query, config);
+        const result = yield UserService_1.default(config).searchUsers(query);
         return res
             .status(http_status_codes_1.OK)
             .json(result)
@@ -78,7 +79,7 @@ router.get("/:accountId", Authentication_1.authentication.checkToken, (req, res)
     }
     try {
         const config = req.params[Authentication_1.authentication.DECODED_CONFIG];
-        const user = yield UserService_1.default.getUser(accountId, config);
+        const user = yield UserService_1.default(config).getUser(accountId);
         return res
             .status(http_status_codes_1.OK)
             .json(user)
