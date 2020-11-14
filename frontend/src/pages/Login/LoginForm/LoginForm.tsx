@@ -1,6 +1,15 @@
 import React, { FormEvent } from "react";
 import "./LoginForm.css";
-import { Button, Checkbox, Form, Input, Typography } from "antd";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Icon,
+  Input,
+  Popover,
+  Tooltip,
+  Typography
+} from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import { WrappedFormUtils } from "antd/lib/form/Form";
 import { AuthenticateRequest } from "../../../api/users";
@@ -36,17 +45,59 @@ const LoginForm: React.FunctionComponent<Props & FormComponentProps> = ({
       <Form.Item>
         {getFieldDecorator("email", {
           rules: [{ required: true, message: "Please input your email" }]
-        })(<Input placeholder="Email" />)}
+        })(
+          <Input
+            placeholder="Email"
+            prefix={<Icon type="user"></Icon>}
+            suffix={
+              <Tooltip title="Please input your jira account email">
+                <Icon type="info-circle" />
+              </Tooltip>
+            }
+          />
+        )}
       </Form.Item>
       <Form.Item>
         {getFieldDecorator("url", {
           rules: [{ required: true, message: "Please input URL" }]
-        })(<Input addonBefore="https://" placeholder="URL" />)}
+        })(
+          <Input
+            addonBefore="https://"
+            placeholder="URL"
+            suffix={
+              <Tooltip title="Please enter your jira instance url - ex. www.atlassian.com">
+                <Icon type="info-circle" />
+              </Tooltip>
+            }
+          />
+        )}
       </Form.Item>
       <Form.Item>
         {getFieldDecorator("apiToken", {
           rules: [{ required: true, message: "Please input token" }]
-        })(<Input placeholder="Token" />)}
+        })(
+          <Input
+            placeholder="API Token"
+            suffix={
+              <Popover
+                content={
+                  <span>
+                    To generate API token for this app go to
+                    <a
+                      className="jira-link"
+                      href="https://id.atlassian.com/manage-profile/security/api-tokens"
+                      target="_blank"
+                    >
+                      https://id.atlassian.com/manage-profile/security/api-tokens
+                    </a>
+                  </span>
+                }
+              >
+                <Icon type="info-circle" />
+              </Popover>
+            }
+          />
+        )}
       </Form.Item>
       <Form.Item>
         {getFieldDecorator("rememberMe", {

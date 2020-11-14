@@ -21,7 +21,7 @@ const generateJWT = (config: AuthenticateRequest) => {
 
 const setToken = (res: Response, request: AuthenticateRequest) => {
   const token = generateJWT(request);
-  return prolongCookie(res, token, request.rememberMe);
+  return prolongCookie(res, token, request.rememberMe || false);
 };
 
 const clearToken = (res: Response) => {

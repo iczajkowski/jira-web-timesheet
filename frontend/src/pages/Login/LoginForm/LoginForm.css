@@ -5,3 +5,7 @@
 .login-form__error {
   padding-top: 0.5rem;
 }
+
+.jira-link {
+  margin-left: 4px;
+}
