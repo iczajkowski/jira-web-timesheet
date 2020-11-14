@@ -20,7 +20,7 @@ const generateJWT = (config) => {
 };
 const setToken = (res, request) => {
     const token = generateJWT(request);
-    return prolongCookie(res, token, request.rememberMe);
+    return prolongCookie(res, token, request.rememberMe || false);
 };
 const clearToken = (res) => {
     return res.clearCookie(ACCESS_TOKEN);
