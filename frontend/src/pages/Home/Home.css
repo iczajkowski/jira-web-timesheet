@@ -1,14 +1,27 @@
-.home__container {
+.home {
   display: flex;
   padding: 2rem;
+  min-width: 950px;
+}
+
+.home__container {
+  display: flex;
 }
 
 .home__content {
   background: white;
   border: 1px solid #ebedf0;
   padding: 1rem;
+  margin-right: 1rem;
 }
 
 .home__sider {
   height: 100%;
+  flex: 0 0 300px;
+}
+
+@media screen and (max-width: 1142px) {
+  .home__sider {
+    display: none;
+  }
 }

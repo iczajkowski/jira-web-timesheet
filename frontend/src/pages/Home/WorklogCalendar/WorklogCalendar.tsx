@@ -15,6 +15,7 @@ interface WorklogCalendarProps {
   worklogs: WorklogGroups;
   selectedDate: moment.Moment;
   totalLoggedTime: number;
+  onAddWorklogClick: () => void;
   onViewChanged: (selectedDate: moment.Moment, user: User) => void;
   onRefresh: () => void;
 }
@@ -27,7 +28,8 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   worklogs,
   selectedDate,
   totalLoggedTime,
-  userWorklogs
+  userWorklogs,
+  onAddWorklogClick
 }) => {
   useEffect(() => {
     window.addEventListener("keyup", keydown);
@@ -77,6 +79,14 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
             value={formatDuration(totalLoggedTime)}
           />
         </div>
+        <Button
+          type="primary"
+          icon="plus-circle"
+          className="worklog-calendar__button-add"
+          onClick={onAddWorklogClick}
+        >
+          Add
+        </Button>
         <div className="worklog-calendar__user">
           <UserSearch user={userWorklogs} onUserSelect={userSelected} />
         </div>

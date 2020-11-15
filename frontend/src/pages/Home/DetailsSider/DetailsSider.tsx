@@ -14,7 +14,6 @@ interface DetailsSiderProps {
   selectedDate: moment.Moment;
   worklogs: WorklogModel[];
   canEdit: boolean;
-  onAddWorklogClick: () => void;
   onWorklogDeleted: () => void;
 }
 
@@ -23,7 +22,6 @@ const DetailsSider: React.FC<DetailsSiderProps> = ({
   selectedDate,
   worklogs,
   canEdit,
-  onAddWorklogClick,
   onWorklogDeleted
 }) => {
   const totalLoggedTime = sumTotalLoggedTime(worklogs);
@@ -57,17 +55,6 @@ const DetailsSider: React.FC<DetailsSiderProps> = ({
         header={
           <div className="list__header">
             <b>Logged Issues:</b>
-            {canEdit ? (
-              <Button
-                onClick={onAddWorklogClick}
-                type="primary"
-                icon="plus-circle"
-              >
-                Add
-              </Button>
-            ) : (
-              ""
-            )}
           </div>
         }
         dataSource={worklogs}

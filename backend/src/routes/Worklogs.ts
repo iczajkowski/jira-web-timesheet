@@ -73,9 +73,9 @@ router.delete(
     } catch (error) {
       console.error(error);
       if (error instanceof ForbiddenError) {
-        return res.status(FORBIDDEN);
+        return res.status(FORBIDDEN).end();
       } else {
-        return res.status(INTERNAL_SERVER_ERROR);
+        return res.status(INTERNAL_SERVER_ERROR).end();
       }
     }
   }

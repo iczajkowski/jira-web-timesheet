@@ -165,33 +165,33 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="home__container">
+    <div className="home">
       {initialized() ? (
         <>
-          <Row gutter={24}>
-            <Col span={18} className="home__content">
+          <div className="home__container">
+            <div className="home__content">
               <WorklogCalendar
                 url={url}
                 userWorklogs={user as User}
                 isFetchingWorklogs={isFetchingWorklogs}
                 selectedDate={selectedDate}
                 onViewChanged={onViewChanged}
+                onAddWorklogClick={handleShowModal}
                 onRefresh={handleRefresh}
                 worklogs={worklogsByDate}
                 totalLoggedTime={totalLoggedTime}
               />
-            </Col>
-            <Col span={6} className="home__sider">
+            </div>
+            <div className="home__sider">
               <DetailsSider
                 jiraUrl={url}
                 selectedDate={selectedDate}
                 worklogs={worklogForSelectedDate}
                 canEdit={canEdit()}
-                onAddWorklogClick={handleShowModal}
                 onWorklogDeleted={handleRefresh}
               />
-            </Col>
-          </Row>
+            </div>
+          </div>
           <AddWorklogFormModal
             selectedDate={selectedDate}
             modalVisible={modalVisible}
