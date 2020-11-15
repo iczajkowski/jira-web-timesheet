@@ -1,4 +1,4 @@
-import { Col, message, Row } from "antd";
+import { message } from "antd";
 import { isNil } from "lodash";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -10,13 +10,13 @@ import { User } from "../../models/User";
 import { RootState } from "../../reducer";
 import { getDateSpan } from "../../utils/date";
 import { useQuery } from "../../utils/hooks";
-import WorklogCalendar from "./WorklogCalendar/WorklogCalendar";
-import "./Home.css";
+import AddWorklogFormModal from "./AddWorklogFormModal/AddWorklogFormModal";
 import DetailsSider from "./DetailsSider/DetailsSider";
+import "./Home.css";
+import { getWorklogForDate } from "./utils/getWorklogForDate";
 import { groupWorklogsByDates } from "./utils/groupWorklogsByDates";
 import { sumTotalLoggedTime } from "./utils/sumTotalLoggedTime";
-import { getWorklogForDate } from "./utils/getWorklogForDate";
-import AddWorklogFormModal from "./AddWorklogFormModal/AddWorklogFormModal";
+import WorklogCalendar from "./WorklogCalendar/WorklogCalendar";
 
 const getInitialDate = ({
   month,

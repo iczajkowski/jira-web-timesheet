@@ -21,6 +21,7 @@ const MainLayout = ({ children }) => {
           <a
             href="https://github.com/iczajkow/jira-web-timesheet"
             target="_blank"
+            rel="noopener noreferrer"
           >
             <Icon type="github" style={{ fontSize: "24px" }} />
           </a>

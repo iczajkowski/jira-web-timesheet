@@ -45,7 +45,7 @@ class IssueSearch extends React.Component<IssueSearchProps, IssueSearchState> {
 
   handleChange = (issueId: string) => {
     const issue: IssueSearchResponse | undefined = this.state.data.find(
-      (issue: IssueSearchResponse) => issue.id == Number(issueId)
+      (issue: IssueSearchResponse) => Number(issue.id) === Number(issueId)
     );
     let value = "";
     if (issue) {

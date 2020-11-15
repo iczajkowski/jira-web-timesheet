@@ -63,7 +63,11 @@ const DetailsSider: React.FC<DetailsSiderProps> = ({
             <List.Item.Meta
               title={
                 <div className="worklog-list__title">
-                  <a target="_blank" href={issueUrl(jiraUrl, value.issueKey)}>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={issueUrl(jiraUrl, value.issueKey)}
+                  >
                     {value.issueKey}
                   </a>
                   {canEdit ? (

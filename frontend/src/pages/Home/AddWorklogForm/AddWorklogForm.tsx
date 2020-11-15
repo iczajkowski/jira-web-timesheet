@@ -31,7 +31,7 @@ const AddWorklogForm: React.FC<FormComponentProps & AddWorklogFormProps> = ({
 
   useEffect(() => {
     form.resetFields(["started"]);
-  }, [initialDate]);
+  }, [initialDate, form]);
 
   return (
     <Form onChange={onChange}>

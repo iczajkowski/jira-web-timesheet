@@ -41,7 +41,11 @@ const DateCellFactory = (worklogs: WorklogGroups, url: string) => (
                   className="worklog-list-item"
                   key={`${worklog.issueKey}_${index}`}
                 >
-                  <a target="_blank" href={issueUrl(url, worklog.issueKey)}>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={issueUrl(url, worklog.issueKey)}
+                  >
                     {worklog.issueKey}
                   </a>
                   <span>{formatDuration(worklog.timeSpent)}</span>

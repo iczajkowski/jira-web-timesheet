@@ -87,6 +87,7 @@ const LoginForm: React.FunctionComponent<Props & FormComponentProps> = ({
                       className="jira-link"
                       href="https://id.atlassian.com/manage-profile/security/api-tokens"
                       target="_blank"
+                      rel="noopener noreferrer"
                     >
                       https://id.atlassian.com/manage-profile/security/api-tokens
                     </a>
