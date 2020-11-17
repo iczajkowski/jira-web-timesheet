@@ -4,6 +4,8 @@ import { NextFunction, Request, Response } from "express";
 import { UNAUTHORIZED } from "http-status-codes";
 import moment from "moment";
 import { AuthenticateRequest } from "../models/authenticate-request";
+import userDao from "../daos/UserDao";
+import { logger } from "./Logger";
 
 const ACCESS_TOKEN = "access_token";
 const DECODED_CONFIG = "decoded_config";
@@ -54,6 +56,10 @@ const checkToken = (req: Request, res: Response, next: NextFunction) => {
       if (err) {
         return res.status(UNAUTHORIZED).end();
       } else {
+        userDao
+          .updateAnonymousUserActiveTime(decoded.data.email)
+          .catch(err => logger.error("error logging user:", err));
+
         if (decoded.hasOwnProperty("exp")) {
           setToken(res, decoded.data);
         }
