@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const jira_client_factory_1 = require("../jira-client/jira-client-factory");
+const createJiraClient_1 = require("../jira-client/createJiraClient");
 const users_1 = require("../jira-client/users");
-const getCurrentUser = (config) => jira_client_factory_1.jiraClientFactory(config).myself.getMyself();
-const searchUsers = (query, config) => users_1.findUsers({ query, jiraClient: jira_client_factory_1.jiraClientFactory(config) });
-const getUser = (accountId, config) => users_1.getUser({ accountId, jiraClient: jira_client_factory_1.jiraClientFactory(config) });
-exports.default = {
-    getCurrentUser,
-    searchUsers,
-    getUser
+const userService = (config) => {
+    const jiraClient = createJiraClient_1.createJiraClient(config);
+    return {
+        getCurrentUser: () => jiraClient.myself.getMyself(),
+        searchUsers: (query) => users_1.findUsers({ query, jiraClient }),
+        getUser: (accountId) => users_1.getUser({ accountId, jiraClient })
+    };
 };
+exports.default = userService;
