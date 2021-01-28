@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { DependencyList, useEffect } from "react";
 import { DatePicker, Form, InputNumber, Typography } from "antd";
 import { FormComponentProps } from "antd/lib/form";
 import IssueSearch from "../IssueSearch/IssueSearch";
@@ -7,6 +7,8 @@ import * as moment from "moment";
 export interface AddWorklogFormProps {
   validationPassed: boolean;
   initialDate: moment.Moment;
+  initialHours: number;
+  initialMinutes: number;
   onChange: () => void;
 }
 
@@ -24,14 +26,16 @@ const formItemLayout = {
 const AddWorklogForm: React.FC<FormComponentProps & AddWorklogFormProps> = ({
   form,
   initialDate,
+  initialHours,
+  initialMinutes,
   validationPassed,
   onChange
 }) => {
   const { getFieldDecorator } = form;
 
   useEffect(() => {
-    form.resetFields(["started"]);
-  }, [initialDate]);
+    form.resetFields(["started", "minutes", "hours"]);
+  }, [initialDate, initialHours, initialMinutes]);
 
   return (
     <Form onChange={onChange}>
@@ -53,13 +57,13 @@ const AddWorklogForm: React.FC<FormComponentProps & AddWorklogFormProps> = ({
       <Form.Item label="Hours" labelCol={{ sm: 4 }} wrapperCol={{ sm: 4 }}>
         {getFieldDecorator("hours", {
           rules: [{ required: true, message: "Please select date" }],
-          initialValue: 0
+          initialValue: initialHours
         })(<InputNumber min={0} max={24} />)}
       </Form.Item>
       <Form.Item label="Minutes" labelCol={{ sm: 4 }} wrapperCol={{ sm: 4 }}>
         {getFieldDecorator("minutes", {
           rules: [{ required: true, message: "Please select date" }],
-          initialValue: 0
+          initialValue: initialMinutes
         })(<InputNumber min={0} max={59} />)}
       </Form.Item>
       {validationPassed ? (

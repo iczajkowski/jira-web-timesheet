@@ -160,6 +160,8 @@ const Home: React.FC = () => {
     selectedDate
   );
 
+  const timeLoggedForSelectedDate = sumTotalLoggedTime(worklogForSelectedDate);
+
   const canEdit = () => {
     return (user && user.accountId) === appUser.accountId;
   };
@@ -195,6 +197,7 @@ const Home: React.FC = () => {
           <AddWorklogFormModal
             selectedDate={selectedDate}
             modalVisible={modalVisible}
+            timeLoggedForSelectedDate={timeLoggedForSelectedDate}
             onHideModal={handleHideModal}
             onAdded={handleAdded}
           />

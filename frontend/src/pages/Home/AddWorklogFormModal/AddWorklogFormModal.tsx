@@ -1,11 +1,12 @@
 import AddWorklogForm from "../AddWorklogForm/AddWorklogForm";
 import { Form, Modal } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as moment from "moment";
 import { FormComponentProps } from "antd/lib/form";
 import { postWorklog } from "../../../api/worklogs";
 import { IssueSearchResponse } from "../../../models/Issue";
 import { WorklogEntryRequest } from "../../../models/Worklog";
+import { formatDuration } from "../../../utils/duration";
 
 interface WorklogForm {
   issue: IssueSearchResponse;
@@ -33,6 +34,7 @@ const formToWorklogRequest = ({
 export interface AddWorklogFormModalProps {
   selectedDate: moment.Moment;
   modalVisible: boolean;
+  timeLoggedForSelectedDate: number;
   onHideModal: () => void;
   onAdded: () => void;
 }
@@ -41,6 +43,7 @@ const AddWorklogFormModal: React.FC<FormComponentProps &
   AddWorklogFormModalProps> = ({
   selectedDate,
   modalVisible,
+  timeLoggedForSelectedDate,
   onHideModal,
   onAdded,
   form
@@ -86,6 +89,8 @@ const AddWorklogFormModal: React.FC<FormComponentProps &
       <AddWorklogForm
         form={form}
         initialDate={selectedDate}
+        initialHours={0}
+        initialMinutes={0}
         validationPassed={validationPassed}
         onChange={handleFormChange}
       />
