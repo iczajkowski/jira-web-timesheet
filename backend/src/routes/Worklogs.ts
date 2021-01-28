@@ -66,8 +66,8 @@ router.delete(
     try {
       const config = req.params[authentication.DECODED_CONFIG];
       const response = await worklogService(config).deleteWorklog(
-        worklogId,
-        issueId
+        issueId,
+        worklogId
       );
       return res.status(OK).json(response);
     } catch (error) {
