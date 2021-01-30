@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Button, Calendar, Icon, Spin, Statistic } from "antd";
 import { WorklogGroups } from "../utils/groupWorklogsByDates";
 import DateCellFactory from "./DateCell";
-import { formatDuration } from "../../../utils/duration";
+import { formatSecondsAsDuration } from "../../../utils/duration";
 import "./WorklogCalendar.css";
 import UserSearch from "../UserSearch/UserSearch";
 import { User } from "../../../models/User";
@@ -76,7 +76,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
         <div className="worklog-calendar__total-summary">
           <Statistic
             title="Total logged:"
-            value={formatDuration(totalLoggedTime)}
+            value={formatSecondsAsDuration(totalLoggedTime)}
           />
         </div>
         <Button

@@ -2,13 +2,12 @@ import React from "react";
 import { DATE_FORMAT, WorklogGroups } from "../utils/groupWorklogsByDates";
 import { Moment } from "moment";
 import "./DateCell.css";
-import { formatDuration } from "../../../utils/duration";
+import { formatSecondsAsDuration } from "../../../utils/duration";
 import { Typography } from "antd";
 import { issueUrl } from "../utils/issueUrl";
+import { FULL_WORKDAY_IN_SECONDS } from "../../../utils/constants";
 
 const { Text } = Typography;
-
-const FULL_WORKDAY = 8 * 3600;
 
 const DateCellFactory = (worklogs: WorklogGroups, url: string) => (
   value: Moment
@@ -18,7 +17,7 @@ const DateCellFactory = (worklogs: WorklogGroups, url: string) => (
   const total =
     worklogsToRender &&
     worklogsToRender.reduce((sum, worklog) => sum + worklog.timeSpent, 0);
-  const fullDateLogged = total === FULL_WORKDAY;
+  const fullDateLogged = total === FULL_WORKDAY_IN_SECONDS;
 
   return (
     <div className="ant-fullcalendar-date">
@@ -26,7 +25,7 @@ const DateCellFactory = (worklogs: WorklogGroups, url: string) => (
         {worklogsToRender && (
           <span className="callendar-cell__total-time">
             <Text type={fullDateLogged ? undefined : "warning"}>
-              Total: {formatDuration(total)}{" "}
+              Total: {formatSecondsAsDuration(total)}{" "}
             </Text>
           </span>
         )}
@@ -48,7 +47,7 @@ const DateCellFactory = (worklogs: WorklogGroups, url: string) => (
                   >
                     {worklog.issueKey}
                   </a>
-                  <span>{formatDuration(worklog.timeSpent)}</span>
+                  <span>{formatSecondsAsDuration(worklog.timeSpent)}</span>
                 </li>
               ))}
             </ul>

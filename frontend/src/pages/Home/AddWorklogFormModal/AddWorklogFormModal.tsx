@@ -6,7 +6,7 @@ import { FormComponentProps } from "antd/lib/form";
 import { postWorklog } from "../../../api/worklogs";
 import { IssueSearchResponse } from "../../../models/Issue";
 import { WorklogEntryRequest } from "../../../models/Worklog";
-import { formatDuration } from "../../../utils/duration";
+import { getInitialDurationValue } from "./initialDurationValue";
 
 interface WorklogForm {
   issue: IssueSearchResponse;
@@ -78,6 +78,8 @@ const AddWorklogFormModal: React.FC<FormComponentProps &
     validateTimeSpent();
   };
 
+  const { hours, minutes } = getInitialDurationValue(timeLoggedForSelectedDate);
+
   return (
     <Modal
       title="Log Time"
@@ -89,8 +91,8 @@ const AddWorklogFormModal: React.FC<FormComponentProps &
       <AddWorklogForm
         form={form}
         initialDate={selectedDate}
-        initialHours={0}
-        initialMinutes={0}
+        initialHours={hours}
+        initialMinutes={minutes}
         validationPassed={validationPassed}
         onChange={handleFormChange}
       />

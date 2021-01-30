@@ -1,6 +1,6 @@
 import moment from "moment";
 import React from "react";
-import { formatDuration } from "../../../utils/duration";
+import { formatSecondsAsDuration } from "../../../utils/duration";
 import "./DetailsTitle.css";
 
 export interface DetailsTitleProps {
@@ -15,7 +15,7 @@ export const DetailsTitle: React.FC<DetailsTitleProps> = ({
   return (
     <div className="details__title">
       <span>{date.format("ll")}</span>
-      <span>{formatDuration(totalLoggedTime)}</span>
+      <span>{formatSecondsAsDuration(totalLoggedTime)}</span>
     </div>
   );
 };

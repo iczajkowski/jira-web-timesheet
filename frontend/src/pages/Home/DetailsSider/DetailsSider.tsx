@@ -5,7 +5,7 @@ import moment from "moment";
 import { WorklogModel } from "../utils/groupWorklogsByDates";
 import { DetailsTitle } from "./DetailsTitle";
 import { sumTotalLoggedTime } from "../utils/sumTotalLoggedTime";
-import { formatDuration } from "../../../utils/duration";
+import { formatSecondsAsDuration } from "../../../utils/duration";
 import { issueUrl } from "../utils/issueUrl";
 import { deleteWorklog } from "../../../api/worklogs";
 
@@ -33,7 +33,7 @@ const DetailsSider: React.FC<DetailsSiderProps> = ({
         worklog.issueKey
       } logged at ${moment(worklog.started).format(
         "lll"
-      )}. Time that was logged: ${formatDuration(worklog.timeSpent)}`,
+      )}. Time that was logged: ${formatSecondsAsDuration(worklog.timeSpent)}`,
       onOk: () => {
         return deleteWorklog({
           worklogId: worklog.id,
@@ -87,7 +87,7 @@ const DetailsSider: React.FC<DetailsSiderProps> = ({
                     Started at: <b>{moment(value.started).format("lll")}</b>
                   </span>
                   <span>
-                    Logged: <b>{formatDuration(value.timeSpent)}</b>
+                    Logged: <b>{formatSecondsAsDuration(value.timeSpent)}</b>
                   </span>
                 </div>
               }
