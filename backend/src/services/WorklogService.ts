@@ -15,7 +15,6 @@ const worklogService = (config: ClientConfig) => {
     },
 
     addWorklog: (request: WorklogEntryRequest) => {
-      const jiraClient = createJiraClient(config);
       const started = moment(request.started).toDate();
       return jiraClient.issue.addWorkLog({
         timeSpentSeconds: request.timeSpent,
@@ -25,7 +24,6 @@ const worklogService = (config: ClientConfig) => {
     },
 
     deleteWorklog: async (issueId: string, worklogId: string) => {
-      const jiraClient = createJiraClient(config);
       const myself = await jiraClient.myself.getMyself();
       const worklog = await jiraClient.issue.getWorkLog({
         issueId,
