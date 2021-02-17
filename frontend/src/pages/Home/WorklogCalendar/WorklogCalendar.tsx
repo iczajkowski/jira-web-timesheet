@@ -31,12 +31,6 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   userWorklogs,
   onAddWorklogClick
 }) => {
-  useEffect(() => {
-    window.addEventListener("keyup", keydown);
-    return () => {
-      window.removeEventListener("keyup", keydown);
-    };
-  });
 
   const dateChanged = (value: Moment | undefined) => {
     if (!value) {
@@ -60,12 +54,6 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   const backward = () => {
     const previousMonth = selectedDate.clone().subtract(1, "month");
     dateChanged(previousMonth);
-  };
-
-  const keydown = ({ key }: { key: string }) => {
-    if (key === "r") {
-      onRefresh();
-    }
   };
 
   const dateCellRenderer = DateCellFactory(worklogs, url);
@@ -97,7 +85,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
           </Button>
           <Button type="primary" onClick={onRefresh}>
             <Icon type="sync" />
-            Refresh(R)
+            Refresh
           </Button>
           <Button type="primary" onClick={forward}>
             Forward
