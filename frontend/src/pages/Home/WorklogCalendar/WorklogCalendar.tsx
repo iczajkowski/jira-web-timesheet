@@ -29,9 +29,8 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   selectedDate,
   totalLoggedTime,
   userWorklogs,
-  onAddWorklogClick
+  onAddWorklogClick,
 }) => {
-
   const dateChanged = (value: Moment | undefined) => {
     if (!value) {
       return;
@@ -62,17 +61,9 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     <Spin spinning={isFetchingWorklogs}>
       <div className="worklog-calendar__header">
         <div className="worklog-calendar__total-summary">
-          <Statistic
-            title="Total logged:"
-            value={formatSecondsAsDuration(totalLoggedTime)}
-          />
+          <Statistic title="Total logged:" value={formatSecondsAsDuration(totalLoggedTime)} />
         </div>
-        <Button
-          type="primary"
-          icon="plus-circle"
-          className="worklog-calendar__button-add"
-          onClick={onAddWorklogClick}
-        >
+        <Button type="primary" icon="plus-circle" className="worklog-calendar__button-add" onClick={onAddWorklogClick}>
           Add
         </Button>
         <div className="worklog-calendar__user">
@@ -93,11 +84,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
           </Button>
         </Button.Group>
       </div>
-      <Calendar
-        value={selectedDate}
-        onChange={dateChanged}
-        dateFullCellRender={dateCellRenderer}
-      />
+      <Calendar value={selectedDate} onChange={dateChanged} dateFullCellRender={dateCellRenderer} />
     </Spin>
   );
 };
