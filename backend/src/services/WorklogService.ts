@@ -19,7 +19,7 @@ const worklogService = (config: ClientConfig) => {
       return jiraClient.issue.addWorkLog({
         timeSpentSeconds: request.timeSpent,
         issueId: request.issueId,
-        started: toJiraDateTimeFormat(started)
+        started: toJiraDateTimeFormat(started),
       });
     },
 
@@ -27,7 +27,7 @@ const worklogService = (config: ClientConfig) => {
       const myself = await jiraClient.myself.getMyself();
       const worklog = await jiraClient.issue.getWorkLog({
         issueId,
-        id: worklogId
+        id: worklogId,
       });
       const authorID = worklog.author.accountId;
       if (myself.accountId !== authorID) {
@@ -35,7 +35,7 @@ const worklogService = (config: ClientConfig) => {
       } else {
         return jiraClient.issue.deleteWorkLog({ id: worklogId, issueId });
       }
-    }
+    },
   };
 };
 

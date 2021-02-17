@@ -17,7 +17,7 @@ router.get(
     const config = req.params[authentication.DECODED_CONFIG] as ClientConfig;
     const user = await userService(config).getCurrentUser();
     return res.status(OK).json({ user, url: config.url });
-  }
+  },
 );
 
 router.post(
@@ -25,7 +25,7 @@ router.post(
   authentication.checkToken,
   async (req: Request<any>, res: Response) => {
     return authentication.clearToken(res).end();
-  }
+  },
 );
 
 router.post(
@@ -54,7 +54,7 @@ router.post(
         ? response.json({ message: jiraError.message })
         : response.end();
     }
-  }
+  },
 );
 
 router.get(
@@ -79,7 +79,7 @@ router.get(
         ? response.json({ message: jiraError.message })
         : response.end();
     }
-  }
+  },
 );
 
 router.get(
@@ -104,7 +104,7 @@ router.get(
         ? response.json({ message: jiraError.message })
         : response.end();
     }
-  }
+  },
 );
 
 export default router;

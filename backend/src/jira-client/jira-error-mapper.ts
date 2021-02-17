@@ -2,7 +2,7 @@ export enum JiraConnectionError {
   WrongAddress,
   Unauthorized,
   Forbidden,
-  Unknown
+  Unknown,
 }
 
 export abstract class JiraError {
@@ -51,7 +51,7 @@ const errorMappers: ErrorFactory[] = [
     },
     create(error: any): JiraError {
       return new WrongAddressError(error);
-    }
+    },
   },
   {
     match(error: any): boolean {
@@ -64,7 +64,7 @@ const errorMappers: ErrorFactory[] = [
     },
     create(): JiraError {
       return new UnauthorizedError();
-    }
+    },
   },
   {
     match(): boolean {
@@ -72,11 +72,11 @@ const errorMappers: ErrorFactory[] = [
     },
     create(error: any): JiraError {
       return new UnknownError(error);
-    }
-  }
+    },
+  },
 ];
 
 export const mapJiraError = (error: any): JiraError => {
   // @ts-ignore
-  return errorMappers.find(mapper => mapper.match(error)).create(error);
+  return errorMappers.find((mapper) => mapper.match(error)).create(error);
 };

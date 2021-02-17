@@ -15,10 +15,10 @@ const issueService = (config: ClientConfig) => {
           return issue.getIssuePicker({
             query,
             currentJQL,
-            showSubTasks: true
+            showSubTasks: true,
           });
         });
-    }
+    },
   };
 };
 

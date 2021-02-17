@@ -6,7 +6,7 @@ export const createJiraClient = (config: ClientConfig): JiraClient => {
     host: config.url,
     basic_auth: {
       email: config.email,
-      api_token: config.apiToken
-    }
+      api_token: config.apiToken,
+    },
   });
 };

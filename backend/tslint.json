@@ -4,7 +4,9 @@
     "member-ordering": false,
     "object-literal-sort-keys": false,
     "ordered-imports": false,
-    "quotemark": [true, "single"]
+    "member-access": false,
+    "interface-name": false,
+    "max-classes-per-file": false
   },
   "linterOptions": {
     "exclude": ["./node_modules/**"]

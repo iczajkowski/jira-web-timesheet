@@ -7,7 +7,7 @@ export interface IUser extends Document {
 
 const userSchema = new Schema<IUser>({
   email: { type: String, index: true, required: true },
-  lastActiveTime: { type: Date, default: Date.now }
+  lastActiveTime: { type: Date, default: Date.now },
 });
 
 const User = model<IUser>("User", userSchema);

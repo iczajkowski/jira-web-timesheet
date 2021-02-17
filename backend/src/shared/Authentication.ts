@@ -1,4 +1,3 @@
-import { ClientConfig } from "../jira-client/models/client-config";
 import { sign, verify } from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import { UNAUTHORIZED } from "http-status-codes";
@@ -14,7 +13,7 @@ const generateJWT = (config: AuthenticateRequest) => {
   const options = config.rememberMe
     ? {}
     : {
-        expiresIn: "1h"
+        expiresIn: "1h",
       };
   const data = Object.assign({}, config);
   delete data.rememberMe;
@@ -39,7 +38,7 @@ const prolongCookie = (res: Response, token: string, rememberMe: boolean) => {
 
   return res.cookie(ACCESS_TOKEN, token, {
     httpOnly: true,
-    expires
+    expires,
   });
 };
 
@@ -58,7 +57,7 @@ const checkToken = (req: Request, res: Response, next: NextFunction) => {
       } else {
         userDao
           .updateAnonymousUserActiveTime(decoded.data.email)
-          .catch(err => logger.error("error logging user:", err));
+          .catch((error) => logger.error("error logging user:", error));
 
         if (decoded.hasOwnProperty("exp")) {
           setToken(res, decoded.data);
@@ -66,7 +65,7 @@ const checkToken = (req: Request, res: Response, next: NextFunction) => {
         req.params[DECODED_CONFIG] = decoded.data;
         next();
       }
-    }
+    },
   );
 };
 
@@ -74,5 +73,5 @@ export const authentication = {
   setToken,
   checkToken,
   clearToken,
-  DECODED_CONFIG
+  DECODED_CONFIG,
 };

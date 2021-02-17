@@ -1,21 +1,22 @@
-import { Request, Response, Router, request } from "express";
+import { Request, Response, Router } from "express";
 import { authentication } from "../shared/Authentication";
 import {
   BAD_REQUEST,
   FORBIDDEN,
   INTERNAL_SERVER_ERROR,
-  OK
+  OK,
 } from "http-status-codes";
 import worklogService from "../services/WorklogService";
 import moment from "moment";
 import { WorklogEntryRequest } from "../models/worklog-request";
 import { ForbiddenError } from "../errors/ForbiddenError";
+import { logger } from "../shared";
 
 const router = Router();
 
 const toDates = ({ from, to }: { from: string; to: string }) => ({
   from: moment(from),
-  to: moment(to)
+  to: moment(to),
 });
 
 router.get(
@@ -32,14 +33,14 @@ router.get(
       const worklogs = await worklogService(config).getWorklogs(
         from.toDate(),
         to.toDate(),
-        accountId
+        accountId,
       );
       return res.status(OK).json(worklogs);
     } catch (e) {
-      console.error(e);
+      logger.error(e);
       return res.status(INTERNAL_SERVER_ERROR);
     }
-  }
+  },
 );
 
 router.post(
@@ -52,10 +53,10 @@ router.post(
       const response = await worklogService(config).addWorklog(request);
       return res.status(OK).json(response);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       return res.status(INTERNAL_SERVER_ERROR);
     }
-  }
+  },
 );
 
 router.delete(
@@ -67,18 +68,18 @@ router.delete(
       const config = req.params[authentication.DECODED_CONFIG];
       const response = await worklogService(config).deleteWorklog(
         issueId,
-        worklogId
+        worklogId,
       );
       return res.status(OK).json(response);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       if (error instanceof ForbiddenError) {
         return res.status(FORBIDDEN).end();
       } else {
         return res.status(INTERNAL_SERVER_ERROR).end();
       }
     }
-  }
+  },
 );
 
 export default router;

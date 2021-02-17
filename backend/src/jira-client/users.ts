@@ -19,7 +19,7 @@ export const getUser = ({ accountId, jiraClient }: GetUserContext) => {
     method: "GET",
     json: true,
     followAllRedirects: true,
-    qs: { accountId }
+    qs: { accountId },
   };
 
   return jiraClient.makeRequest(options);

@@ -15,9 +15,9 @@ export interface WorklogClientInput {
 export const getWorklogs = (jiraClient: JiraClient) => async (
   from: Date,
   to: Date,
-  accountId: string
+  accountId: string,
 ) => {
-  //Add one more day because of timezone issues
+  // Add one more day because of timezone issues
   const searchTo = moment(to)
     .add(1, "day")
     .toDate();
@@ -25,11 +25,11 @@ export const getWorklogs = (jiraClient: JiraClient) => async (
   const issuesResponse = await searchIssues(jiraClient)(
     from,
     searchTo,
-    accountId
+    accountId,
   );
 
-  return await getIssueWorklogs(issuesResponse.issues, jiraClient, worklog =>
-    filterWorklog(worklog, accountId, from, searchTo)
+  return await getIssueWorklogs(issuesResponse.issues, jiraClient, (worklog) =>
+    filterWorklog(worklog, accountId, from, searchTo),
   );
 };
 
@@ -37,7 +37,7 @@ const filterWorklog = (
   worklog: Worklog,
   accountId: string,
   from: Date,
-  to: Date
+  to: Date,
 ) => {
   const momentStarted = moment(worklog.started);
   const isBetween =
@@ -49,7 +49,7 @@ const filterWorklog = (
 const getIssueWorklogs = (
   issues: IssueResponse[],
   client: JiraClient,
-  filter?: (worklog: Worklog) => boolean
+  filter?: (worklog: Worklog) => boolean,
 ): Promise<IssueWorklog[]> => {
   return Promise.all(
     issues.map((issue: any) =>
@@ -57,13 +57,13 @@ const getIssueWorklogs = (
         .getWorkLogs({ issueId: issue.id })
         .then((worklogResponse: { worklogs: Worklog[] }) => {
           const worklogs = worklogResponse.worklogs.filter(
-            worklog => !filter || filter(worklog)
+            (worklog) => !filter || filter(worklog),
           );
           return {
             issueKey: issue.key,
-            worklogs
+            worklogs,
           };
-        })
-    )
+        }),
+    ),
   );
 };

@@ -8,7 +8,7 @@ const userService = (config: ClientConfig) => {
   return {
     getCurrentUser: () => jiraClient.myself.getMyself(),
     searchUsers: (query: string) => findUsers({ query, jiraClient }),
-    getUser: (accountId: string) => getUserApi({ accountId, jiraClient })
+    getUser: (accountId: string) => getUserApi({ accountId, jiraClient }),
   };
 };
 

@@ -5,19 +5,19 @@ import { toJiraDateFormat } from "./date";
 export const searchIssues = (client: JiraClient) => (
   from: Date,
   to: Date,
-  author: string
+  author: string,
 ): Promise<IssuesResponse> => {
   const jql = buildJQL(from, to, author);
   return client.search.search({
     jql,
     startAt: 0,
-    maxResults: getMaxInt32()
+    maxResults: getMaxInt32(),
   });
 };
 
 const buildJQL = (from: Date, to: Date, author: string) => {
   return `worklogAuthor = "${author}" AND worklogDate >= "${toJiraDateFormat(
-    from
+    from,
   )}" AND worklogDate <= "${toJiraDateFormat(to)}"`;
 };
 

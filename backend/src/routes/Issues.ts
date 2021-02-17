@@ -18,12 +18,12 @@ router.get(
     const response = await issueService(config).searchIssue(query);
     const historySearchIssues = [
       ...response.sections[0].issues,
-      ...response.sections[1].issues
+      ...response.sections[1].issues,
     ].filter((value, index, array) => {
-      return array.findIndex(v => value.id === v.id) === index;
+      return array.findIndex((v) => value.id === v.id) === index;
     });
     return res.status(OK).json(historySearchIssues);
-  }
+  },
 );
 
 export default router;

@@ -11,7 +11,7 @@ const { File, Console } = transports;
 
 // Init Logger
 const wintstonLogger = createLogger({
-  level: "info"
+  level: "info",
 });
 
 /**
@@ -24,16 +24,16 @@ if (process.env.NODE_ENV === "production") {
   const errTransport = new File({
     filename: "./logs/error.log",
     format: fileFormat,
-    level: "error"
+    level: "error",
   });
   const infoTransport = new File({
     filename: "./logs/combined.log",
-    format: fileFormat
+    format: fileFormat,
   });
   wintstonLogger.add(errTransport);
   wintstonLogger.add(infoTransport);
 } else {
-  const errorStackFormat = format(info => {
+  const errorStackFormat = format((info) => {
     if (info.stack) {
       // tslint:disable-next-line:no-console
       console.log(info.stack);
@@ -45,8 +45,8 @@ if (process.env.NODE_ENV === "production") {
     format: format.combine(
       format.colorize(),
       format.simple(),
-      errorStackFormat()
-    )
+      errorStackFormat(),
+    ),
   });
   wintstonLogger.add(consoleTransport);
 }
