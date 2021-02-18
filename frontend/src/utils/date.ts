@@ -12,3 +12,11 @@ export const getDateSpan = (current: Moment) => ({
   from: current.startOf("month").toDate(),
   to: current.endOf("month").toDate()
 });
+
+export const isSunday = (date: Moment) => {
+  return date.isoWeekday() === 7;
+}
+
+export const isSaturday = (date: Moment) => {
+  return date.isoWeekday() === 6;
+}

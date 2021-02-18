@@ -7,6 +7,8 @@ import { formatSecondsAsDuration } from "../../../utils/duration";
 import "./WorklogCalendar.css";
 import UserSearch from "../UserSearch/UserSearch";
 import { User } from "../../../models/User";
+import { Holiday } from "../../../models/Holiday";
+import { getHoliday } from "./utils";
 
 interface WorklogCalendarProps {
   url: string;
@@ -15,6 +17,7 @@ interface WorklogCalendarProps {
   worklogs: WorklogGroups;
   selectedDate: moment.Moment;
   totalLoggedTime: number;
+  holidays: Holiday[];
   onAddWorklogClick: () => void;
   onViewChanged: (selectedDate: moment.Moment, user: User) => void;
   onRefresh: () => void;
@@ -22,14 +25,15 @@ interface WorklogCalendarProps {
 
 const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   url,
-  onViewChanged,
-  onRefresh,
   isFetchingWorklogs,
   worklogs,
   selectedDate,
   totalLoggedTime,
   userWorklogs,
+  holidays,
   onAddWorklogClick,
+  onViewChanged,
+  onRefresh,
 }) => {
   const dateChanged = (value: Moment | undefined) => {
     if (!value) {
@@ -55,7 +59,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     dateChanged(previousMonth);
   };
 
-  const dateCellRenderer = DateCellFactory(worklogs, url);
+  const dateCellRenderer = DateCellFactory(worklogs, url, getHoliday(holidays));
 
   return (
     <Spin spinning={isFetchingWorklogs}>

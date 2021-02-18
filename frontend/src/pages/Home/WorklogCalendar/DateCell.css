@@ -18,3 +18,11 @@
 .callendar-cell__day {
   flex: 1 0 auto;
 }
+
+.calendar-saturday {
+  background-color: #f5f5f5;
+}
+
+.calendar-holiday {
+  background-color: #fff1f0;
+}

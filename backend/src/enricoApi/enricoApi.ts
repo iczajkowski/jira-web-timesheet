@@ -1,4 +1,5 @@
 import axios from "axios";
+import { logger } from "../shared";
 
 interface EnricoHolidayForMonthContext {
   /**
@@ -41,8 +42,11 @@ const toStringParams = (obj: Record<string, any>) =>
 export const getEnricoApi = (url: string) => {
   return {
     getHolidaysForMonth: (context: EnricoHolidayForMonthContext): Promise<EnricoHoliday[]> => {
+      logger.debug(
+        `Fetching enrico holidays for month: ${context.month}, year: ${context.year}, country: ${context.country}`
+      );
       const urlParams = new URLSearchParams({ ...toStringParams(context), action: "getHolidaysForMonth" });
-      return axios.get(url, { params: urlParams });
+      return axios.get(url, { params: urlParams }).then((res) => res.data);
     },
   };
 };
