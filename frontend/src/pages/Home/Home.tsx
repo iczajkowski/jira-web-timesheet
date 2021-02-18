@@ -21,7 +21,7 @@ import WorklogCalendar from "./WorklogCalendar/WorklogCalendar";
 const getInitialDate = ({
   month,
   year,
-  day
+  day,
 }: {
   month: string | number | null;
   year: string | number | null;
@@ -43,13 +43,9 @@ const Home: React.FC = () => {
   const history = useHistory();
   const query = useQuery();
 
-  const isFetchingWorklogs = useSelector(
-    (state: RootState) => state.worklogs.isFetchingWorklogs
-  );
+  const isFetchingWorklogs = useSelector((state: RootState) => state.worklogs.isFetchingWorklogs);
 
-  const appUser = useSelector(
-    (state: RootState) => state.appState.user
-  ) as User;
+  const appUser = useSelector((state: RootState) => state.appState.user) as User;
 
   const url = useSelector((state: RootState) => state.appState.url) || "";
 
@@ -58,28 +54,20 @@ const Home: React.FC = () => {
     return user && user.timeZone;
   }) as string;
 
-  const errorWhileFetchingWorklogs = useSelector(
-    (state: RootState) => state.worklogs.error
-  );
+  const errorWhileFetchingWorklogs = useSelector((state: RootState) => state.worklogs.error);
 
-  const { worklogs, month, year, day, user } = useSelector(
-    (state: RootState) => state.worklogs
-  );
+  const { worklogs, month, year, day, user, holidays } = useSelector((state: RootState) => state.worklogs);
 
   const worklogsByDate = groupWorklogsByDates(worklogs, userTimezone);
   const totalLoggedTime = sumTotalLoggedTime(worklogs);
 
-  const [selectedDate, setSelectedDate] = useState(
-    getInitialDate({ month, year, day })
-  );
+  const [selectedDate, setSelectedDate] = useState(getInitialDate({ month, year, day }));
 
   const [modalVisible, setModalVisible] = useState(false);
 
   const setQueryParams = (keys: { [key: string]: string | number }) => {
     const urlParams = new URLSearchParams();
-    Object.entries(keys).forEach(([key, value]) =>
-      urlParams.set(key, value.toString())
-    );
+    Object.entries(keys).forEach(([key, value]) => urlParams.set(key, value.toString()));
     history.push(`?${urlParams.toString()}`);
   };
 
@@ -94,7 +82,7 @@ const Home: React.FC = () => {
       getInitialDate({
         year: query.get("year"),
         month: query.get("month"),
-        day: query.get("day")
+        day: query.get("day"),
       })
     );
     const accountId = query.get("user");
@@ -120,14 +108,10 @@ const Home: React.FC = () => {
       year: changedYear,
       month: changedMonth,
       day: changedDay,
-      user: changedUser.accountId
+      user: changedUser.accountId,
     });
 
-    if (
-      changedMonth !== month ||
-      changedYear !== year ||
-      (user && user.accountId) !== changedUser.accountId
-    ) {
+    if (changedMonth !== month || changedYear !== year || (user && user.accountId) !== changedUser.accountId) {
       const { from, to } = getDateSpan(moment([changedYear, changedMonth]));
 
       fetchWorklogs(from, to, changedUser);
@@ -155,10 +139,7 @@ const Home: React.FC = () => {
   };
 
   const initialized = () => !isNil(user) && !isNil(month) && !isNil(year);
-  const worklogForSelectedDate = getWorklogForDate(
-    worklogsByDate,
-    selectedDate
-  );
+  const worklogForSelectedDate = getWorklogForDate(worklogsByDate, selectedDate);
 
   const timeLoggedForSelectedDate = sumTotalLoggedTime(worklogForSelectedDate);
 
@@ -174,6 +155,7 @@ const Home: React.FC = () => {
             <div className="home__content">
               <WorklogCalendar
                 url={url}
+                holidays={holidays}
                 userWorklogs={user as User}
                 isFetchingWorklogs={isFetchingWorklogs}
                 selectedDate={selectedDate}

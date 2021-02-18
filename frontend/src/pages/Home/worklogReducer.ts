@@ -1,6 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import { WorklogActionTypes } from "./worklogActions";
 import { User } from "../../models/User";
+import { Holiday } from "../../models/Holiday";
 
 export interface WorklogState {
   isFetchingWorklogs: boolean;
@@ -9,6 +10,7 @@ export interface WorklogState {
   year: number | null;
   day: number | null;
   worklogs: any;
+  holidays: Holiday[];
   error: any;
 }
 
@@ -19,6 +21,7 @@ export const defaultState: WorklogState = {
   day: null,
   user: null,
   worklogs: null,
+  holidays: [],
   error: null
 };
 
@@ -41,5 +44,9 @@ export const worklogReducer = createReducer(defaultState, {
     ...state,
     error: action.payload,
     isFetchingWorklogs: false
+  }),
+  [WorklogActionTypes.LoadedHolidays]: (state, action) => ({
+    ...state,
+    holidays: action.payload.holidays
   })
 });

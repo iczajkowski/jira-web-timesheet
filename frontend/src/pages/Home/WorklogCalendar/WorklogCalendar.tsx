@@ -7,6 +7,8 @@ import { formatSecondsAsDuration } from "../../../utils/duration";
 import "./WorklogCalendar.css";
 import UserSearch from "../UserSearch/UserSearch";
 import { User } from "../../../models/User";
+import { Holiday } from "../../../models/Holiday";
+import { getHoliday } from "./utils";
 
 interface WorklogCalendarProps {
   url: string;
@@ -15,6 +17,7 @@ interface WorklogCalendarProps {
   worklogs: WorklogGroups;
   selectedDate: moment.Moment;
   totalLoggedTime: number;
+  holidays: Holiday[];
   onAddWorklogClick: () => void;
   onViewChanged: (selectedDate: moment.Moment, user: User) => void;
   onRefresh: () => void;
@@ -22,16 +25,16 @@ interface WorklogCalendarProps {
 
 const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
   url,
-  onViewChanged,
-  onRefresh,
   isFetchingWorklogs,
   worklogs,
   selectedDate,
   totalLoggedTime,
   userWorklogs,
-  onAddWorklogClick
+  holidays,
+  onAddWorklogClick,
+  onViewChanged,
+  onRefresh,
 }) => {
-
   const dateChanged = (value: Moment | undefined) => {
     if (!value) {
       return;
@@ -56,23 +59,15 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
     dateChanged(previousMonth);
   };
 
-  const dateCellRenderer = DateCellFactory(worklogs, url);
+  const dateCellRenderer = DateCellFactory(worklogs, url, getHoliday(holidays));
 
   return (
     <Spin spinning={isFetchingWorklogs}>
       <div className="worklog-calendar__header">
         <div className="worklog-calendar__total-summary">
-          <Statistic
-            title="Total logged:"
-            value={formatSecondsAsDuration(totalLoggedTime)}
-          />
+          <Statistic title="Total logged:" value={formatSecondsAsDuration(totalLoggedTime)} />
         </div>
-        <Button
-          type="primary"
-          icon="plus-circle"
-          className="worklog-calendar__button-add"
-          onClick={onAddWorklogClick}
-        >
+        <Button type="primary" icon="plus-circle" className="worklog-calendar__button-add" onClick={onAddWorklogClick}>
           Add
         </Button>
         <div className="worklog-calendar__user">
@@ -93,11 +88,7 @@ const WorklogCalendar: React.FC<WorklogCalendarProps> = ({
           </Button>
         </Button.Group>
       </div>
-      <Calendar
-        value={selectedDate}
-        onChange={dateChanged}
-        dateFullCellRender={dateCellRenderer}
-      />
+      <Calendar value={selectedDate} onChange={dateChanged} dateFullCellRender={dateCellRenderer} />
     </Spin>
   );
 };
