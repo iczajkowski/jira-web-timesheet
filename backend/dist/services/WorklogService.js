@@ -12,43 +12,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const jira_client_factory_1 = require("../jira-client/jira-client-factory");
-const get_worklogs_1 = require("../jira-client/get-worklogs");
+const createJiraClient_1 = require("../jira-client/createJiraClient");
+const worklogs_1 = require("../jira-client/worklogs");
 const date_1 = require("../jira-client/date");
 const moment_1 = __importDefault(require("moment"));
 const ForbiddenError_1 = require("../errors/ForbiddenError");
-const getWorklogs = ({ config, from, to, accountId }) => __awaiter(void 0, void 0, void 0, function* () {
-    const jiraClient = jira_client_factory_1.jiraClientFactory(config);
-    return yield get_worklogs_1.getWorklogs({
-        from,
-        to,
-        jiraClient,
-        accountId
-    });
-});
-const addWorklog = ({ config, request }) => {
-    const jiraClient = jira_client_factory_1.jiraClientFactory(config);
-    const started = moment_1.default(request.started).toDate();
-    return jiraClient.issue.addWorkLog({
-        timeSpentSeconds: request.timeSpent,
-        issueId: request.issueId,
-        started: date_1.toJiraDateTimeFormat(started)
-    });
+const worklogService = (config) => {
+    const jiraClient = createJiraClient_1.createJiraClient(config);
+    return {
+        getWorklogs: (from, to, accountId) => {
+            return worklogs_1.getWorklogs(jiraClient)(from, to, accountId);
+        },
+        addWorklog: (request) => {
+            const started = moment_1.default(request.started).toDate();
+            return jiraClient.issue.addWorkLog({
+                timeSpentSeconds: request.timeSpent,
+                issueId: request.issueId,
+                started: date_1.toJiraDateTimeFormat(started),
+            });
+        },
+        deleteWorklog: (issueId, worklogId) => __awaiter(void 0, void 0, void 0, function* () {
+            const myself = yield jiraClient.myself.getMyself();
+            const worklog = yield jiraClient.issue.getWorkLog({
+                issueId,
+                id: worklogId,
+            });
+            const authorID = worklog.author.accountId;
+            if (myself.accountId !== authorID) {
+                throw new ForbiddenError_1.ForbiddenError();
+            }
+            else {
+                return jiraClient.issue.deleteWorkLog({ id: worklogId, issueId });
+            }
+        }),
+    };
 };
-const deleteWorklog = ({ config, issueId, worklogId }) => __awaiter(void 0, void 0, void 0, function* () {
-    const jiraClient = jira_client_factory_1.jiraClientFactory(config);
-    const myself = yield jiraClient.myself.getMyself();
-    const worklog = yield jiraClient.issue.getWorkLog({ issueId, id: worklogId });
-    const authorID = worklog.author.accountId;
-    if (myself.accountId !== authorID) {
-        throw new ForbiddenError_1.ForbiddenError();
-    }
-    else {
-        return jiraClient.issue.deleteWorkLog({ id: worklogId, issueId });
-    }
-});
-exports.default = {
-    getWorklogs,
-    addWorklog,
-    deleteWorklog
-};
+exports.default = worklogService;

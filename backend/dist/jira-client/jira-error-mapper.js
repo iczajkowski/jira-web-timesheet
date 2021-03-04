@@ -43,7 +43,7 @@ const errorMappers = [
         },
         create(error) {
             return new WrongAddressError(error);
-        }
+        },
     },
     {
         match(error) {
@@ -57,7 +57,7 @@ const errorMappers = [
         },
         create() {
             return new UnauthorizedError();
-        }
+        },
     },
     {
         match() {
@@ -65,9 +65,9 @@ const errorMappers = [
         },
         create(error) {
             return new UnknownError(error);
-        }
-    }
+        },
+    },
 ];
 exports.mapJiraError = (error) => {
-    return errorMappers.find(mapper => mapper.match(error)).create(error);
+    return errorMappers.find((mapper) => mapper.match(error)).create(error);
 };
