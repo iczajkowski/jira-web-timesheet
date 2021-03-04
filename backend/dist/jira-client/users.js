@@ -7,7 +7,7 @@ exports.getUser = ({ accountId, jiraClient }) => {
         method: "GET",
         json: true,
         followAllRedirects: true,
-        qs: { accountId }
+        qs: { accountId },
     };
     return jiraClient.makeRequest(options);
 };
