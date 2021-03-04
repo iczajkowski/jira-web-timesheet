@@ -23,12 +23,12 @@ router.get("", Authentication_1.authentication.checkToken, (req, res) => __await
         return res.status(http_status_codes_1.BAD_REQUEST).end();
     }
     const config = req.params[Authentication_1.authentication.DECODED_CONFIG];
-    const response = yield IssueService_1.default.searchIssue(query, config);
+    const response = yield IssueService_1.default(config).searchIssue(query);
     const historySearchIssues = [
         ...response.sections[0].issues,
-        ...response.sections[1].issues
+        ...response.sections[1].issues,
     ].filter((value, index, array) => {
-        return array.findIndex(v => value.id === v.id) === index;
+        return array.findIndex((v) => value.id === v.id) === index;
     });
     return res.status(http_status_codes_1.OK).json(historySearchIssues);
 }));
